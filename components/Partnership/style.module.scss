@@ -1,0 +1,48 @@
+.clients-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem; /* 8 x 2 = 16px */
+  max-height: 50vh;
+
+  @media (max-width: 1024px) {
+    margin-top: 2.5rem; /* 10 x 0.25rem */
+  }
+}
+
+.title {
+  font-size: 3rem; /* Ukuran font */
+  text-align: center;
+  margin-bottom: 1.5rem; /* Memberi jarak antara judul dan logo */
+  color: #333; /* Ganti warna teks sesuai keinginan */
+}
+
+.clients-grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+
+  @media (min-width: 768px) {
+    gap: 4rem; /* 16 x 4 = 64px untuk layar besar */
+  }
+}
+
+.company-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 6rem; /* 24 x 0.25rem, logo lebih kecil */
+  gap: 0.5rem; /* 2 x 0.25rem */
+  margin-right: 50px;
+
+  @media (min-width: 768px) {
+    max-width: 10rem; /* 40 x 0.25rem untuk layar besar */
+  }
+
+  img {
+    max-width: 150%; /* Agar gambar menyesuaikan ukuran elemen */
+    height: auto; /* Menjaga proporsi gambar */
+  }
+}

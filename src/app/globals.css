@@ -1,6 +1,8 @@
 
+
 body{
-    margin: 0px;
-    overflow: hidden; /* Hide scrollbars */
+    margin: 0;
+    overflow: hidden;
     cursor: wait;
 }
+
