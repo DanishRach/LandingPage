@@ -10,6 +10,7 @@ import SlidingImages from "../../components/SlidingImages";
 import Contact from "../../components/Contact";
 import Clients from "../../components/Partnership/Partnership";
 import React from "react";
+import { Demo } from '../../components/Testimoni/ShowTestimonial';
 
 // Declare the Home component as a functional component
 const Home: React.FC = () => {
@@ -36,8 +37,9 @@ const Home: React.FC = () => {
       </AnimatePresence>
       <Landing />
       <Description />
-      <Projects />
       <Clients />
+      <Demo />
+      <Projects />
       <SlidingImages />
       <Contact />
     </main>

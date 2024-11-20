@@ -25,16 +25,16 @@ const slider1: SliderItem[] = [
 
 const slider2: SliderItem[] = [
   {
-    src: 'pen.svg',
-  },
-  {
-    src: 'gold.svg',
-  },
-  {
     src: 'silver.svg',
   },
   {
+    src: 'pen.svg',
+  },
+  {
     src: 'bronze.svg',
+  },
+  {
+    src: 'gold.svg',
   },
 ];
 

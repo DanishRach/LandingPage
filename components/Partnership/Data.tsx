@@ -5,11 +5,6 @@ export const companies = [
       img: "/telkom.svg",
     },
     {
-      id: 2,
-      name: "Muse Akademi",
-      img: "/muse.svg",
-    },
-    {
       id: 3,
       name: "SMK 1 Negeri Nglegok",
       img: "/blitar.svg",

@@ -1,0 +1,131 @@
+.testimonials-container {
+  max-width: 32rem;
+  @media (min-width: 768px) {
+    max-width: 64rem;
+  }
+  margin: 0 auto;
+  font-family: sans-serif;
+  padding: 5rem 1rem;
+}
+
+.title {
+  margin-top: 20vh;
+  font-size: 3rem; /* Ukuran font */
+  text-align: center;
+  margin-bottom: 1.5rem; /* Memberi jarak antara judul dan logo */
+  color: #333; /* Ganti warna teks sesuai keinginan */
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5rem;
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.transition {
+  position: absolute;
+  inset: 0;
+}
+
+.image-container {
+  position: relative;
+  height: 20rem;
+  width: 100%;
+}
+
+.testimonial-image {
+  position: absolute;
+  inset: 0;
+  transform-origin: bottom;
+  height: 100%;
+  width: 100%;
+  border-radius: 1.5rem;
+  object-fit: cover;
+  object-position: center;
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  position: relative; /* Ensure text is on top of image */
+}
+
+.testimonial-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: black;
+  @media (prefers-color-scheme: dark) {
+    color: white;
+  }
+}
+
+.testimonial-designation {
+  font-size: 0.875rem;
+  color: #6b7280;
+  @media (prefers-color-scheme: dark) {
+    color: #d1d5db;
+  }
+}
+
+.testimonial-quote {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin-top: 2rem;
+  @media (prefers-color-scheme: dark) {
+    color: #d1d5db;
+  }
+}
+
+.testimonial-word {
+  display: inline-block;
+  filter: blur(10px);
+  opacity: 0;
+  transform: translateY(5px);
+  transition: all 0.5s ease-in-out;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 1rem;
+  padding-top: 3rem;
+}
+
+.nav-button {
+  height: 1.75rem;
+  width: 1.75rem;
+  border-radius: 50%;
+  background-color: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+
+  &.dark {
+    background-color: #2d3748;
+  }
+
+  .icon {
+    height: 1.25rem;
+    width: 1.25rem;
+    color: black;
+    transition: transform 0.3s ease;
+
+    @media (prefers-color-scheme: dark) {
+      color: #a0aec0;
+    }
+
+    &:hover {
+      transform: rotate(12deg);
+    }
+  }
+
+  &:active .icon {
+    transform: rotate(-12deg);
+  }
+}

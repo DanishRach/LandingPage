@@ -1,4 +1,5 @@
 .clients-container {
+  margin-top: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,6 +20,7 @@
 }
 
 .clients-grid {
+  margin-top: 40px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -35,14 +37,15 @@
   align-items: center;
   max-width: 6rem; /* 24 x 0.25rem, logo lebih kecil */
   gap: 0.5rem; /* 2 x 0.25rem */
-  margin-right: 50px;
+  margin-right: 100px;
 
   @media (min-width: 768px) {
     max-width: 10rem; /* 40 x 0.25rem untuk layar besar */
   }
 
   img {
-    max-width: 150%; /* Agar gambar menyesuaikan ukuran elemen */
+    max-width: 170%; /* Agar gambar menyesuaikan ukuran elemen */
     height: auto; /* Menjaga proporsi gambar */
   }
 }
+
