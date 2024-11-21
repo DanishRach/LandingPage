@@ -1,10 +1,10 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./style.module.scss";
-import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import Image from "next/image";
+import Project from "./components/project";
 
 // Type for Project data
 interface ProjectData {
@@ -156,6 +156,16 @@ export default function Home() {
             })}
           </div>
         </motion.div>
+
+        {projects.map((project, index) => (
+          <Project
+            key={index}
+            index={index}
+            title={project.title}
+            manageModal={manageModal}
+          />
+        ))}
+
         <motion.div
           ref={cursor}
           className={styles.cursor}
