@@ -11,6 +11,7 @@ import Contact from "../../components/Contact";
 import Clients from "../../components/Partnership/Partnership";
 import React from "react";
 import { Demo } from '../../components/Testimoni/ShowTestimonial';
+import AnimatedMask from '../../components/ShowText/text';
 
 // Declare the Home component as a functional component
 const Home: React.FC = () => {
@@ -39,6 +40,7 @@ const Home: React.FC = () => {
       <Description />
       <Clients />
       <Demo />
+      <AnimatedMask />
       <Projects />
       <SlidingImages />
       <Contact />

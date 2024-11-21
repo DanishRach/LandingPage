@@ -19,7 +19,7 @@ const Index = () => {
   // Reset isActive state when pathname changes
   useEffect(() => {
     if (isActive) setIsActive(false);
-  }, [pathname]);
+  }, [pathname, isActive]); // Added 'isActive' to the dependency array
 
   // Register ScrollTrigger and animate button on scroll
   useLayoutEffect(() => {
@@ -49,7 +49,7 @@ const Index = () => {
         },
       });
     }
-  }, []);
+  }, []); // No changes here
 
   return (
     <>
