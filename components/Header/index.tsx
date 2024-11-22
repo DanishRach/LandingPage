@@ -9,6 +9,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Rounded from "../../src/common/RoundedButton";
 import Magnetic from "../../src/common/Magnetic";
 import React from "react";
+import Link from "next/link";
 
 const Index = () => {
   const header = useRef<HTMLDivElement | null>(null);
@@ -18,8 +19,12 @@ const Index = () => {
 
   // Reset isActive state when pathname changes
   useEffect(() => {
-    if (isActive) setIsActive(false);
-  }, [pathname, isActive]); // Added 'isActive' to the dependency array
+    if (isActive) setIsActive(true);
+  }, [pathname, isActive]);
+
+  function coba() {
+    alert(pathname);
+  } // Added 'isActive' to the dependency array
 
   // Register ScrollTrigger and animate button on scroll
   useLayoutEffect(() => {
@@ -58,13 +63,31 @@ const Index = () => {
         <div className={styles.nav}>
           <Magnetic>
             <div className={styles.el}>
-              <a>Home</a>
+              <Link
+                style={{
+                  color: pathname === "/" ? "white" : "black",
+                  textDecoration: "none",
+                  cursor: "pointer",
+                }}
+                href="/"
+              >
+                Home
+              </Link>
               <div className={styles.indicator}></div>
             </div>
           </Magnetic>
           <Magnetic>
             <div className={styles.el}>
-              <a>Product</a>
+              <Link
+                style={{
+                  color: pathname === "/" ? "white" : "black",
+                  textDecoration: "none",
+                  cursor: "pointer",
+                }}
+                href="/page/product"
+              >
+                Product
+              </Link>
               <div className={styles.indicator}></div>
             </div>
           </Magnetic>

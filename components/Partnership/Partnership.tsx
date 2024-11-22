@@ -18,9 +18,8 @@ const Clients = () => {
                 <Image
                   src={company.img}
                   alt={company.name}
-                  width={150}  // You can specify the width
-                  height={150} // You can specify the height
-                  className=""  // Specify any classes if needed
+                  width={300}  // You can specify the width
+                  height={300} // You can specify the height
                 />
               </div>
             </React.Fragment>
