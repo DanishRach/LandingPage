@@ -1,8 +1,33 @@
+"use client"
+
+import { useEffect, useState } from "react";
 import styles from "./pricing.module.scss";
 import { FaCheck } from "react-icons/fa";
+import Preloader from "../../../../components/PreloaderPro";
+import { AnimatePresence } from "framer-motion";
 
 const PricingPage = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    (async () => {
+      // Dynamically import LocomotiveScroll and initialize it
+      const LocomotiveScroll = (await import("locomotive-scroll")).default;
+      const locomotiveScroll = new LocomotiveScroll();
+
+      setTimeout(() => {
+        setIsLoading(false);
+        document.body.style.cursor = "default";
+        window.scrollTo(0, 0);
+      }, 2000);
+    })();
+  }, []);
+
   return (
+    <div>
+      <AnimatePresence mode="wait">
+        {isLoading && <Preloader />}
+      </AnimatePresence>
       <div className={styles.pricingContainer}>
         <h1 className={styles.heading}>Pricing Plans</h1>
         <div className={styles.pricingGrid}>
@@ -90,6 +115,7 @@ const PricingPage = () => {
           </div>
         </div>
       </div>
+    </div>
   );
 };
 

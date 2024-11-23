@@ -59,51 +59,51 @@ const Index = () => {
   return (
     <>
       <div ref={header} className={styles.header}>
-        <div className={styles.logo}></div>
-        <div className={styles.nav}>
-          <Magnetic>
-            <div className={styles.el}>
-              <Link
-                style={{
-                  color: pathname === "/" ? "white" : "black",
-                  textDecoration: "none",
-                  cursor: "pointer",
-                }}
-                href="/"
-              >
-                Home
-              </Link>
-              <div className={styles.indicator}></div>
-            </div>
-          </Magnetic>
-          <Magnetic>
-            <div className={styles.el}>
-              <Link
-                style={{
-                  color: pathname === "/" ? "white" : "black",
-                  textDecoration: "none",
-                  cursor: "pointer",
-                }}
-                href="/page/product"
-              >
-                Product
-              </Link>
-              <div className={styles.indicator}></div>
-            </div>
-          </Magnetic>
-          <Magnetic>
-            <div className={styles.el}>
-              <a>Contact</a>
-              <div className={styles.indicator}></div>
-            </div>
-          </Magnetic>
-          <Magnetic>
-            <div className={styles.el}>
-              <a>Login</a>
-              <div className={styles.indicator}></div>
-            </div>
-          </Magnetic>
-        </div>
+          <div className={styles.logo}></div>
+          <div className={styles.nav}>
+            <Magnetic>
+              <div className={styles.el}>
+                <Link
+                  style={{
+                    color: pathname === "/" ? "white" : "black",
+                    textDecoration: "none",
+                    cursor: "pointer",
+                  }}
+                  href="/"
+                >
+                  Home
+                </Link>
+                <div className={styles.indicator}></div>
+              </div>
+            </Magnetic>
+            <Magnetic>
+              <div className={styles.el}>
+                <Link
+                  style={{
+                    color: pathname === "/" ? "white" : "black",
+                    textDecoration: "none",
+                    cursor: "pointer",
+                  }}
+                  href="/page/product"
+                >
+                  Product
+                </Link>
+                <div className={styles.indicator}></div>
+              </div>
+            </Magnetic>
+            <Magnetic>
+              <div className={styles.el}>
+                <a>Contact</a>
+                <div className={styles.indicator}></div>
+              </div>
+            </Magnetic>
+            <Magnetic>
+              <div className={styles.el}>
+                <a>Login</a>
+                <div className={styles.indicator}></div>
+              </div>
+            </Magnetic>
+          </div>
       </div>
       <div ref={button} className={styles.headerButtonContainer}>
         <Rounded
