@@ -15,6 +15,7 @@ import AnimatedMask from '../../components/ShowText/text';
 
 // Declare the Home component as a functional component
 const Home: React.FC = () => {
+  
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
