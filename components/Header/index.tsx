@@ -93,7 +93,16 @@ const Index = () => {
             </Magnetic>
             <Magnetic>
               <div className={styles.el}>
-                <a>Contact</a>
+              <Link
+                  style={{
+                    color: pathname === "/" ? "white" : "black",
+                    textDecoration: "none",
+                    cursor: "pointer",
+                  }}
+                  href="/page/inbox"
+                >
+                  inbox
+                </Link>
                 <div className={styles.indicator}></div>
               </div>
             </Magnetic>

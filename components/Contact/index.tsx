@@ -26,7 +26,7 @@ const ContactSection: React.FC = () => {
         <div className={styles.title}>
           <span>
             <div className={styles.imageContainer}>
-              <Image fill={true} alt="image" src={`/images/p2.avif`} />
+              <Image width={100} height={100} alt="image" src={`/images/p1.avif`} />
             </div>
             <h2>Let&apos;s work</h2>
           </span>
