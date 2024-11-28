@@ -106,6 +106,21 @@ const Index = () => {
                 <div className={styles.indicator}></div>
               </div>
             </Magnetic>
+            <Magnetic>
+              <div className={styles.el}>
+              <Link
+                  style={{
+                    color: pathname === "/" ? "white" : "black",
+                    textDecoration: "none",
+                    cursor: "pointer",
+                  }}
+                  href="/page/admin"
+                >
+                  Admin
+                </Link>
+                <div className={styles.indicator}></div>
+              </div>
+            </Magnetic>
           </div>
       </div>
       <div ref={button} className={styles.headerButtonContainer}>

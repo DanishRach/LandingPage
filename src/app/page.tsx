@@ -12,7 +12,7 @@ import Clients from "../../components/Partnership/Partnership";
 import React from "react";
 import { Demo } from '../../components/Testimoni/ShowTestimonial';
 import AnimatedMask from '../../components/ShowText/text';
-import PricingPage from './page/product/page';
+import TransactionPlans from './page/transaksi/transaction';
 
 // Declare the Home component as a functional component
 const Home: React.FC = () => {
@@ -43,7 +43,7 @@ const Home: React.FC = () => {
       <Clients />
       <AnimatedMask />
       <Projects />
-      <PricingPage />
+      <TransactionPlans />
       <Demo />
       <SlidingImages />
       <Contact />
