@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { login } from "@/api/user";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -19,23 +21,22 @@ export default function LoginForm() {
   const [error, setError] = useState("");
   const router = useRouter();
 
-  const handleLogin = (event: React.FormEvent) => {
+  const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     setError("");
     setLoading(true);
 
-    const savedEmail = localStorage.getItem("userEmail");
-    const savedPassword = localStorage.getItem("userPassword");
-
-    setTimeout(() => {
-      setLoading(false);
-      if (email === savedEmail && password === savedPassword) {
-        alert("Login successful!");
-        router.push("/"); // Redirect to the next page
-      } else {
-        setError("Invalid email or password");
-      }
-    }, 2000);
+    const formData = new FormData()
+    if(email) formData.append('email', email)
+    if(password) formData.append('password', password)
+    const result = await login(formData)
+    if (result.error) {
+      toast.error(result.error)
+      setLoading(false)
+    } else {
+      toast.success(result.success)
+      router.push('/')
+    }
   };
 
   return (

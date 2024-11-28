@@ -3,32 +3,39 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Container, CircularProgress, Link } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { login } from '@/api/user';
+import { toast } from 'sonner';
 
 export default function SignUpForm ()  {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
 
-  const handleSignUp = (event: React.FormEvent) => {
+  async function handleSignUp (event: React.FormEvent) {
     event.preventDefault();
+    setLoading(true);
     setError('');
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
+    const formData = new FormData()
+    if(email) formData.append('email', email)
+    if(password) formData.append('password', password)
+    const result = await login(formData)
+    if (result.error) {
+      toast.error(result.error)
+      setLoading(false)
+    } else {
+      toast.success(result.success)
+      router.push('/')
+    }
 
-    setLoading(true);
-    setTimeout(() => {
-      localStorage.setItem('userEmail', email);
-      localStorage.setItem('userPassword', password);
-      setLoading(false);
-      alert('Account created successfully!');
-      router.push('/login'); // Redirect ke halaman login setelah sign up berhasil
-    }, 2000);
   };
 
   return (
@@ -120,7 +127,7 @@ export default function SignUpForm ()  {
             Already have an account?{' '}
             <Link
               component="button"
-              onClick={() => router.push('/login')} // Redirect ke halaman Login
+              onClick={() => router.push('/page/form')} // Redirect ke halaman Login
               underline="hover"
               sx={{ color: '#2629cf', fontWeight: 'bold' }}
             >
