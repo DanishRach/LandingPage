@@ -1,5 +1,6 @@
 'use server';
 
+import { Domain } from "@prisma/client";
 import prisma from "../../lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -65,7 +66,7 @@ export async function addProject(formData: FormData) {
         await prisma.project.create({
             data: {
                 project: project as string,
-                domain: domain as string,
+                domain: domain as Domain,
                 userID: userID,
                 layananID: layananID,
                 tagihan: 0,
@@ -172,7 +173,7 @@ export async function editProject(formData: FormData) {
             },
             data: {
                 project: project as string || undefined,
-                domain: domain as string || undefined,
+                domain: domain as Domain || undefined,
                 userID: userID,
                 layananID: layananID,
                 tagihan: dataLayanan?.harga as number

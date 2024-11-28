@@ -78,21 +78,6 @@ const Index = () => {
             </Magnetic>
             <Magnetic>
               <div className={styles.el}>
-                <Link
-                  style={{
-                    color: pathname === "/" ? "white" : "black",
-                    textDecoration: "none",
-                    cursor: "pointer",
-                  }}
-                  href="/page/product"
-                >
-                  Product
-                </Link>
-                <div className={styles.indicator}></div>
-              </div>
-            </Magnetic>
-            <Magnetic>
-              <div className={styles.el}>
               <Link
                   style={{
                     color: pathname === "/" ? "white" : "black",
@@ -108,7 +93,16 @@ const Index = () => {
             </Magnetic>
             <Magnetic>
               <div className={styles.el}>
-                <a>Login</a>
+              <Link
+                  style={{
+                    color: pathname === "/" ? "white" : "black",
+                    textDecoration: "none",
+                    cursor: "pointer",
+                  }}
+                  href="/page/form"
+                >
+                  Login
+                </Link>
                 <div className={styles.indicator}></div>
               </div>
             </Magnetic>

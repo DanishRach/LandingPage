@@ -31,7 +31,7 @@ model User {
 
 model Project {
   projectID String @id @default(auto()) @map("_id") @db.ObjectId
-  domain    String
+  domain    Domain
   project   String
   tagihan   Int
   createdAt DateTime
@@ -55,4 +55,9 @@ model Layanan {
 enum Role {
   USER
   ADMIN
+}
+
+enum Domain {
+  COM
+  NET
 }

@@ -25,9 +25,6 @@ const PricingPage = () => {
 
   return (
     <div>
-      <AnimatePresence mode="wait">
-        {isLoading && <Preloader />}
-      </AnimatePresence>
       <div className={styles.pricingContainer}>
         <h1 className={styles.heading}>Pricing Plans</h1>
         <div className={styles.pricingGrid}>
