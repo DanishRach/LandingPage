@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useState } from "react";
 import { Layanan } from "./layanan";
 import { getLayananList, addLayanan, updateLayanan, deleteLayanan } from "./layananService";

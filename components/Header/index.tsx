@@ -114,9 +114,24 @@ const Index = () => {
                     textDecoration: "none",
                     cursor: "pointer",
                   }}
-                  href="/page/admin"
+                  href="/page/admin/user"
                 >
                   Admin
+                </Link>
+                <div className={styles.indicator}></div>
+              </div>
+            </Magnetic>
+            <Magnetic>
+              <div className={styles.el}>
+              <Link
+                  style={{
+                    color: pathname === "/" ? "white" : "black",
+                    textDecoration: "none",
+                    cursor: "pointer",
+                  }}
+                  href="/page/admin/layanan_admin"
+                >
+                  CRUD Admin
                 </Link>
                 <div className={styles.indicator}></div>
               </div>
