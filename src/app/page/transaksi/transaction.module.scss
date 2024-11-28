@@ -1,110 +1,130 @@
 .container {
-    background-color: #f9fafb; /* bg-gray-50 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 1.5rem; /* p-6 */
-  }
-  
-  .card {
-    background-color: white;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 0.75rem; /* rounded-lg */
-    width: 100%;
-    max-width: 48rem; /* max-w-6xl */
-    padding: 1.5rem; /* p-6 */
-  }
-  
-  .title {
-    text-align: center;
-    margin-bottom: 3rem; /* mb-12 */
-  }
-  
-  .title h1 {
-    font-size: 2rem; /* text-3xl */
-    font-weight: 700; /* font-bold */
-    color: #1f2937; /* text-gray-900 */
-  }
-  
-  .title p {
-    color: #6b7280; /* text-gray-500 */
-    margin-top: 1rem; /* mt-4 */
-  }
-  
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr; /* grid-cols-1 */
-    gap: 1.5rem; /* gap-6 */
-  }
-  
-  .grid.md {
-    grid-template-columns: repeat(2, 1fr); /* md:grid-cols-2 */
-  }
-  
-  .plan {
-    border: 1px solid #e5e7eb; /* border-gray-200 */
-    border-radius: 0.75rem; /* rounded-lg */
-    padding: 1.5rem; /* p-6 */
-    text-align: center;
-  }
-  
-  .plan h2 {
-    font-size: 1.25rem; /* text-xl */
-    font-weight: 700; /* font-bold */
-    color: #1f2937; /* text-gray-800 */
-  }
-  
-  .plan p {
-    color: #6b7280; /* text-gray-500 */
-    margin-top: 0.5rem; /* mt-2 */
-  }
-  
-  .price {
-    margin-top: 1rem; /* mt-4 */
-    font-size: 2rem; /* text-4xl */
-    font-weight: 700; /* font-bold */
-    color: #1f2937; /* text-gray-900 */
-  }
-  
-  .price span {
-    font-size: 1rem; /* text-lg */
-    font-weight: 400; /* font-normal */
-  }
-  
-  .strike-through {
-    color: #6b7280; /* text-gray-500 */
-    font-size: 0.875rem; /* text-sm */
-    text-decoration: line-through;
-    margin-top: 0.25rem; /* mt-1 */
-  }
-  
-  .button {
-    margin-top: 1.5rem; /* mt-6 */
-    padding: 0.5rem 1.5rem; /* px-6 py-2 */
-    background-color: #4f46e5; /* bg-indigo-600 */
-    color: white;
-    border-radius: 0.375rem; /* rounded-lg */
-    cursor: pointer;
-  }
-  
-  .button:hover {
-    background-color: #4338ca; /* hover:bg-indigo-700 */
-  }
-  
-  .features {
-    margin-top: 1.5rem; /* mt-6 */
-    color: #374151; /* text-gray-700 */
-  }
-  
-  .features li {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.5rem; /* space-y-2 */
-  }
-  
-  .features li .check {
-    color: #6366f1; /* text-indigo-500 */
-    margin-right: 0.5rem; /* mr-2 */
-  }
-  
+  background-color: #f9fafb; /* bg-gray-50 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 3rem; /* Increased padding */
+}
+
+.card {
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem; /* Increased border radius for a smoother look */
+  width: 100%;
+  max-width: 90rem; /* Increased max-width to make the card larger */
+  padding: 3rem; /* Increased padding for more content space */
+  overflow: hidden;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 2.5rem; /* Increased bottom margin */
+}
+
+.title h1 {
+  font-size: 2.5rem; /* Increased font size */
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.title p {
+  color: #6b7280;
+  margin-top: 1.25rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Increased min-width for columns */
+  gap: 3rem; /* Increased gap between grid items */
+}
+
+.plan {
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem; /* Increased border radius */
+  padding: 2.5rem; /* Increased padding */
+  text-align: center;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Stronger shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.plan:hover {
+  transform: translateY(-8px); /* Increased hover effect for more interactivity */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.plan h2 {
+  font-size: 1.75rem; /* Increased title size */
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.plan p {
+  color: #6b7280;
+  margin-top: 0.75rem; /* Increased margin */
+}
+
+.price {
+  margin-top: 2rem; /* Increased margin */
+  font-size: 3rem; /* Larger font size for prices */
+  font-weight: 700;
+  color: #4f46e5;
+}
+
+.price span {
+  font-size: 1.25rem; /* Larger font size for the /month text */
+  font-weight: 400;
+}
+
+.strike-through {
+  color: #6b7280;
+  font-size: 1rem; /* Increased size for strike-through text */
+  text-decoration: line-through;
+  margin-top: 0.5rem; /* Increased top margin */
+}
+
+.button {
+  margin-top: 2.5rem; /* Increased margin */
+  padding: 1rem 2.5rem; /* Larger padding */
+  background-color: #4f46e5;
+  color: white;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #4338ca;
+}
+
+.features {
+  margin-top: 2rem; /* Increased margin */
+  color: #374151;
+  list-style: none; /* Remove default list styling */
+  padding: 0;
+}
+
+.features li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.25rem; /* Increased margin between features */
+  font-size: 1rem; /* Standardized font size */
+  color: #374151; /* Text color for features */
+}
+
+.features li .check {
+  color: #6366f1; /* text-indigo-500 */
+  margin-right: 1.25rem; /* Adjusted spacing between checkmark and text */
+  font-size: 1.25rem; /* Increased size for the checkmark */
+  line-height: 1.25; /* Ensure vertical alignment */
+}
+
+.features li span {
+  font-size: 1rem; /* Ensure text size consistency */
+  color: #374151; /* Dark text for feature descriptions */
+}
+
+.features li:last-child {
+  margin-bottom: 0; /* Remove bottom margin on the last item */
+}
