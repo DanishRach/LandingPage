@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { TableRow } from "./types";
 import styles from './page.module.scss'; // Import the SCSS file
+import { projectProps } from "../../../../../types/types";
 
 interface TableProps {
-  rows: TableRow[];
+  rows: projectProps[] | undefined;
 }
 
 const Table: React.FC<TableProps> = ({ rows = [] }) => {
@@ -13,9 +13,14 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
   const [checkedRows, setCheckedRows] = useState<boolean[]>(Array(rows.length).fill(false));
   const [isSelectAll, setIsSelectAll] = useState<boolean>(false);
   const [visibleColumns, setVisibleColumns] = useState({
-    status: true,
-    email: true,
-    amount: true,
+    projectID: true,
+    domain: true,
+    project: true,
+    tagihan: true,
+    createdAt: true,
+    tenggat: true,
+    userID: true,
+    layananID: true,
   });
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -26,7 +31,7 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
 
   // Filter rows based on email
   const filteredRows = rows.filter((row) =>
-    row.email.toLowerCase().includes(filter.toLowerCase())
+    row.project.toLowerCase().includes(filter.toLowerCase())
   );
 
   // Handle Select All
@@ -47,7 +52,7 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
   };
 
   // Handle column visibility toggle
-  const toggleColumnVisibility = (column: "status" | "email" | "amount") => {
+  const toggleColumnVisibility = (column: "projectID"|"domain"|"project"|"tagihan"| "createdAt"| "tenggat"| "userID"|"layananID") => {
     setVisibleColumns((prev) => ({
       ...prev,
       [column]: !prev[column],
@@ -77,29 +82,65 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
               <label className="block mb-1">
                 <input
                   type="checkbox"
-                  checked={visibleColumns.status}
-                  onChange={() => toggleColumnVisibility("status")}
+                  checked={visibleColumns.project}
+                  onChange={() => toggleColumnVisibility("project")}
                   className="mr-2"
                 />
-                Status
+                project
               </label>
               <label className="block mb-1">
                 <input
                   type="checkbox"
-                  checked={visibleColumns.email}
-                  onChange={() => toggleColumnVisibility("email")}
+                  checked={visibleColumns.domain}
+                  onChange={() => toggleColumnVisibility("domain")}
                   className="mr-2"
                 />
-                Email
+                domain
               </label>
-              <label className="block">
+              <label className="block mb-1">
                 <input
                   type="checkbox"
-                  checked={visibleColumns.amount}
-                  onChange={() => toggleColumnVisibility("amount")}
+                  checked={visibleColumns.tagihan}
+                  onChange={() => toggleColumnVisibility("tagihan")}
                   className="mr-2"
                 />
-                Amount
+                tagihan
+              </label>
+              <label className="block mb-1">
+                <input
+                  type="checkbox"
+                  checked={visibleColumns.createdAt}
+                  onChange={() => toggleColumnVisibility("createdAt")}
+                  className="mr-2"
+                />
+                createdAt
+              </label>
+              <label className="block mb-1">
+                <input
+                  type="checkbox"
+                  checked={visibleColumns.tenggat}
+                  onChange={() => toggleColumnVisibility("tenggat")}
+                  className="mr-2"
+                />
+                tenggat
+              </label>
+              <label className="block mb-1">
+                <input
+                  type="checkbox"
+                  checked={visibleColumns.userID}
+                  onChange={() => toggleColumnVisibility("userID")}
+                  className="mr-2"
+                />
+                userID
+              </label>
+              <label className="block mb-1">
+                <input
+                  type="checkbox"
+                  checked={visibleColumns.layananID}
+                  onChange={() => toggleColumnVisibility("layananID")}
+                  className="mr-2"
+                />
+                layananID
               </label>
             </div>
           )}
@@ -120,16 +161,27 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
                   onChange={(e) => handleSelectAll(e.target.checked)}
                 />
               </th>
-              {visibleColumns.status && (
-                <th className="p-2 border-b border-gray-700">Status</th>
+              {visibleColumns.project && (
+                <th className="p-2 border-b border-gray-700">project</th>
               )}
-              {visibleColumns.email && (
-                <th className="p-2 border-b border-gray-700">Email</th>
+              {visibleColumns.domain && (
+                <th className="p-2 border-b border-gray-700">domain</th>
               )}
-              {visibleColumns.amount && (
-                <th className="p-2 border-b border-gray-700">Amount</th>
+              {visibleColumns.tagihan && (
+                <th className="p-2 border-b border-gray-700">tagihan</th>
               )}
-              <th className="p-2 border-b border-gray-700">...</th>
+              {visibleColumns.createdAt && (
+                <th className="p-2 border-b border-gray-700">createdAt</th>
+              )}
+              {visibleColumns.tenggat && (
+                <th className="p-2 border-b border-gray-700">tenggat</th>
+              )}
+              {visibleColumns.userID && (
+                <th className="p-2 border-b border-gray-700">userID</th>
+              )}
+              {visibleColumns.layananID && (
+                <th className="p-2 border-b border-gray-700">layananID</th>
+              )}
             </tr>
           </thead>
           <tbody>
@@ -147,16 +199,26 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
                     onChange={(e) => handleRowCheckbox(index, e.target.checked)}
                   />
                 </td>
-                {visibleColumns.status && (
-                  <td className="p-2 border-b border-gray-700">{row.status}</td>
+                {visibleColumns.project && (
+                  <td className="p-2 border-b border-gray-700">{row.project}</td>
                 )}
-                {visibleColumns.email && (
-                  <td className="p-2 border-b border-gray-700">{row.email}</td>
+                {visibleColumns.domain && (
+                  <td className="p-2 border-b border-gray-700">{row.domain}</td>
                 )}
-                {visibleColumns.amount && (
-                  <td className="p-2 border-b border-gray-700">
-                    ${row.amount.toFixed(2)}
-                  </td>
+                {visibleColumns.tagihan && (
+                  <td className="p-2 border-b border-gray-700">{row.tagihan}</td>
+                )}
+                {visibleColumns.createdAt && (
+                  <td className="p-2 border-b border-gray-700">{(row.createdAt).toLocaleDateString()}</td>
+                )}
+                {visibleColumns.tenggat && (
+                  <td className="p-2 border-b border-gray-700">{(row.tenggat).toLocaleDateString()}</td>
+                )}
+                {visibleColumns.userID && (
+                  <td className="p-2 border-b border-gray-700">{row.userID}</td>
+                )}
+                {visibleColumns.layananID && (
+                  <td className="p-2 border-b border-gray-700">{row.layananID}</td>
                 )}
                 <td className="p-2 border-b border-gray-700">...</td>
               </tr>
