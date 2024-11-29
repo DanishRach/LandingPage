@@ -92,7 +92,6 @@ const Index = () => {
               <div className={styles.el}>
                 <Link
                   style={{
-                    color: pathname === "/" ? "white" : "black",
                     textDecoration: "none",
                     cursor: "pointer",
                   }}
@@ -131,6 +130,23 @@ const Index = () => {
                 <div className={styles.indicator}></div>
               </div>
             </Magnetic>
+            <Magnetic>
+              <div className={styles.el}>
+                <Link
+                  onClick={async () => {
+                    await deleteSession();
+                  }}
+                  style={{
+                    textDecoration: "none",
+                    cursor: "pointer",
+                  }}
+                  href="/page/form"
+                >
+                  Log Out
+                </Link>
+                <div className={styles.indicator}></div>
+              </div>
+            </Magnetic>
           </div>
         ) : (
           <div className={styles.nav}>
@@ -150,39 +166,42 @@ const Index = () => {
                 <div className={styles.indicator}></div>
               </div>
             </Magnetic>
-            <Magnetic>
-              <div className={styles.el}>
-                <Link
-                  style={{
-                    color: pathname === "/" ? "white" : "black",
-                    textDecoration: "none",
-                    cursor: "pointer",
-                  }}
-                  href="/page/profile"
-                >
-                  Profile
-                </Link>
-                <div className={styles.indicator}></div>
-              </div>
-            </Magnetic>
+
             {isLogin ? (
-              <Magnetic>
-                <div className={styles.el}>
-                  <Link
-                    onClick={async () => {
-                      await deleteSession();
-                    }}
-                    style={{
-                      textDecoration: "none",
-                      cursor: "pointer",
-                    }}
-                    href="/page/form"
-                  >
-                    Log Out
-                  </Link>
-                  <div className={styles.indicator}></div>
-                </div>
-              </Magnetic>
+              <>
+                <Magnetic>
+                  <div className={styles.el}>
+                    <Link
+                      style={{
+                        color: pathname === "/" ? "white" : "black",
+                        textDecoration: "none",
+                        cursor: "pointer",
+                      }}
+                      href="/page/profile"
+                    >
+                      Profile
+                    </Link>
+                    <div className={styles.indicator}></div>
+                  </div>
+                </Magnetic>
+                <Magnetic>
+                  <div className={styles.el}>
+                    <Link
+                      onClick={async () => {
+                        await deleteSession();
+                      }}
+                      style={{
+                        textDecoration: "none",
+                        cursor: "pointer",
+                      }}
+                      href="/page/form"
+                    >
+                      Log Out
+                    </Link>
+                    <div className={styles.indicator}></div>
+                  </div>
+                </Magnetic>
+              </>
             ) : (
               <Magnetic>
                 <div className={styles.el}>

@@ -12,11 +12,18 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Deeper shadow for modern feel */
   max-height: 80vh; /* Limit the maximum height of the form container */
   overflow-y: auto; /* Allow vertical scrolling if content overflows */
+  height: 100%; /* Ensure the container can expand to fit content */
 }
 
 .profile-container::-webkit-scrollbar {
-    display: none; /* Hides the scrollbar */
-  }
+  width: 8px; /* Optional: Styling for the scrollbar */
+  display: none;
+}
+
+.profile-container::-webkit-scrollbar-thumb {
+  background-color: #007bff;
+  border-radius: 4px;
+}
 
 .profile-header {
   font-size: 28px; /* Larger font size for the header */
