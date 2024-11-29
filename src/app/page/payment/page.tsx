@@ -1,12 +1,50 @@
 "use client"
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from 'next/navigation';  // Import useRouter from next/navigation
+import { usePathname, useRouter } from 'next/navigation';  // Import useRouter from next/navigation
 import { useSearchParams } from 'next/navigation'; // Import useSearchParams from next/navigation
 import { CSSTransition } from "react-transition-group";
 import styles from './payment.module.scss';
+import { userProps } from "../../../../types/types";
+import { getSession } from "@/lib/auth";
+import { Domain } from "@prisma/client";
+import { editUser, findUser } from "@/api/user";
+import { transaction } from "@/api/transaction";
+import { addProject } from "@/api/project";
+import { toast } from "sonner";
+import { findLayanan } from "@/api/bundle";
+import Script from "next/script";
 
-const PaymentPage: React.FC = () => {
+declare global {
+  interface Window {
+    snap: {
+      pay: (transactionToken: string, options?: SnapPayOptions) => void;
+    };
+  }
+}
+interface SnapPayOptions {
+  onSuccess?: (result: unknown) => void;
+  onPending?: (result: unknown) => void;
+  onError?: (result: unknown) => void;
+  onClose?: () => void;
+}
+
+export default function PaymentPage() {
+
+  const [userLogin, setUserLogin] = useState<userProps>()
+
+  const [project, setProject] = useState<string>('')
+  const [domain, setDomain] = useState<string>('')
+  
+  const [email, setEmail] = useState<string>('')
+  const [telp, setTelp] = useState<string>('')
+  const [namaDepan, setNamaDepan] = useState<string>('')
+  const [namaBelakang, setNamaBelakang] = useState<string>('')
+  const [provinsi, setProvinsi] = useState<string>('')
+  const [kota, setKota] = useState<string>('')
+  const [alamat, setAlamat] = useState<string>('')
+  const [kodePos, setKodePos] = useState<string>('')
+
   const router = useRouter();
   const searchParams = useSearchParams();  // Get query parameters from the URL
   const [planData, setPlanData] = useState<any>({
@@ -21,11 +59,19 @@ const PaymentPage: React.FC = () => {
     const price = searchParams.get('price');
     const features = searchParams.get('features');
 
+    async function fetchUser() {
+      const data = await getSession()
+      const userID = data?.data.userID
+      const userData = await findUser(userID !== undefined? userID : '')
+      setUserLogin(userData !== null? userData : undefined)
+    }
+
     setPlanData({
       name: name || "Unknown Plan",
       price: price ? parseFloat(price) : 0,
       features: features ? features.split(",") : []
     });
+    fetchUser()
   }, [searchParams]);
 
   const { name, price, features } = planData;
@@ -33,23 +79,57 @@ const PaymentPage: React.FC = () => {
   const [showNotification, setShowNotification] = useState(false);
 
   // Handle form submission
-  const handlePayment = (e: React.FormEvent) => {
+  const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Show notification
-    setShowNotification(true);
+    const formData = new FormData()
+    if(email) formData.append('email',email)
+    if(telp) formData.append('telp',telp)
+    if(namaDepan) formData.append('namaDepan',namaDepan)
+    if(namaBelakang) formData.append('namaBelakang',namaBelakang)
+    if(provinsi) formData.append('provinsi',provinsi)
+    if(kota) formData.append('kota',kota)
+    if(alamat) formData.append('alamat',alamat)
+    if(kodePos) formData.append('kodePos',kodePos)
+    
+      if(project) formData.append('project',project)
+    if(domain) formData.append('domain',domain)
 
-    // Hide notification and navigate back after 2 seconds
-    setTimeout(() => {
-      setShowNotification(false);
-      router.push("/?"); // Replace with the route to your transactions page
-    }, 2000);
+      const userID = userLogin?.userID
+      const layananID = searchParams.get('id')
+      if(userID) formData.append('userID',userID)
+      if(layananID) formData.append('layananID',layananID)
+
+      await editUser(formData)
+      const pay = await transaction(formData)
+        if (typeof pay === 'string') {
+            window.snap.pay(pay, {
+                onSuccess: async function (){ 
+                    const data = await addProject(formData)
+                    router.push('/')
+                    if (data.error) {
+                        toast.error(data.error)
+                    } else{
+                        toast.success(data.success)
+                    }
+                },
+                onPending: function(){ console.log('pending')},
+                onError: function(){toast.error('something wrong')},
+                onClose: function(){toast.info('customer closed the popup without finishing the payment')}
+            })
+        }
   };
 
   return (
+    <>
+    <Script
+            src={process.env.NEXT_PUBLIC_MIDTRANS_SNAP_SRC}
+            data-client-key={process.env.NEXT_PUBLIC_CLIENT}
+            strategy='lazyOnload'
+        />
     <div className={styles['payment-container']}>
       {/* Notification */}
-      <CSSTransition
+      {/* <CSSTransition
         in={showNotification}
         timeout={300}
         classNames="fade"
@@ -60,12 +140,14 @@ const PaymentPage: React.FC = () => {
             Pembayaran Berhasil!
           </div>
         </div>
-      </CSSTransition>
+      </CSSTransition> */}
 
       {/* Left Section */}
       <div className={styles['left-section']}>
         <button
-          onClick={() => router.back()} // Use router.back() to navigate back
+          onClick={() => {
+            router.back()
+          }} // Use router.back() to navigate back
           className={styles['back-button']}
         >
           ← Kembali
@@ -104,6 +186,8 @@ const PaymentPage: React.FC = () => {
           <div>
             <label>Email</label>
             <input
+              value={email || userLogin?.email}
+              onChange={(e) => setEmail(e.target.value)}
               type="email"
               placeholder="you@example.com"
               required
@@ -112,66 +196,105 @@ const PaymentPage: React.FC = () => {
           <div>
             <label>No. Telepon</label>
             <input
+              value={telp || userLogin?.telp!}
+              onChange={(e) => setTelp(e.target.value)}
               type="tel"
               placeholder="0812 3456 7890"
               required
             />
           </div>
           <div>
-            <label>Card information</label>
-            <div className={styles['flex-inputs']}>
-              <input
-                type="text"
-                className="w-2/3"
-                placeholder="1234 1234 1234 1234"
-                required
-              />
-              <input
-                type="text"
-                className="w-1/3"
-                placeholder="CVC"
-                required
-              />
-            </div>
-            <div className={styles['flex-inputs']}>
-              <input
-                type="text"
-                className="half-width"
-                placeholder="Bulan / Tahun"
-                required
-              />
-              <input
-                type="text"
-                className="half-width"
-                placeholder="Nama Pemegang Kartu"
-                required
-              />
+            <label>Project Informatioin</label>
+            <div className={styles['flex-input']}>
+            <input
+                  value={project}
+                  onChange={(e) => setProject(e.target.value)}
+                  type="text"
+                  className="text"
+                  placeholder="Project"
+                  required
+                />
+            <select
+                  value={domain}
+                  onChange={(e) => setDomain(e.target.value)}
+                  required
+                >
+                  <option></option>
+                  <option value={"COM"}>.com</option>
+                  <option value={"NET"}>.net</option>
+                </select>
             </div>
           </div>
           <div>
-            <label>Alamat</label>
-            <input
-              type="text"
-              placeholder="Nama Jalan"
-              required
-            />
-          </div>
-          <div className={styles['flex-inputs']}>
-            <div className="half-width">
-              <label>Provinsi</label>
-              <input
-                type="text"
-                placeholder="Jawa Barat"
-                required
-              />
+            <label>Personal information</label>
+            <div className={styles['flex-inputs']}>
+              <div className="half-width">
+                <input
+                  value={namaDepan || userLogin?.namaDepan!}
+                  onChange={(e) => setNamaDepan(e.target.value)}
+                  type="text"
+                  className="text"
+                  placeholder="Nama depan"
+                  required
+                />
+              </div>
+              <div className="half-width">
+                <input
+                  value={namaBelakang || userLogin?.namaBelakang!}
+                  onChange={(e) => setNamaBelakang(e.target.value)}
+                  type="text"
+                  className="text"
+                  placeholder="Nama Belakang"
+                  required
+                />
+              </div>
             </div>
-            <div className="half-width">
-              <label>Kode Pos</label>
-              <input
-                type="text"
-                placeholder="12345"
-                required
-              />
+          </div>
+          <div>
+            <label>Address information</label>
+            <div className={styles['flex-inputs']}>
+              <div className="half-width">
+                <input
+                  value={provinsi || userLogin?.provinsi!}
+                  onChange={(e) => setProvinsi(e.target.value)}
+                  type="text"
+                  className="text"
+                  placeholder="Provinsi"
+                  required
+                />
+              </div>
+              <div className="half-width">
+                <input
+                  value={kota || userLogin?.kota!}
+                  onChange={(e) => setKota(e.target.value)}
+                  type="text"
+                  className="text"
+                  placeholder="Kota"
+                  required
+                />
+              </div>
+            </div>
+            <div className={styles['flex-inputs']}>
+              <div className="half-width">
+                <input
+                  value={alamat || userLogin?.alamat!}
+                  onChange={(e) => setAlamat(e.target.value)}
+                  type="text"
+                  className="text"
+                  placeholder="Alamat"
+                  required
+                />
+              </div>
+              <div className="half-width">
+                <input
+                  value={kodePos || userLogin?.kodePos!}
+                  onChange={(e) => setKodePos(e.target.value)}
+                  type="text"
+                  className="text"
+                  placeholder="Kode Pos"
+                  required
+                />
+              </div>
             </div>
           </div>
 
@@ -185,7 +308,6 @@ const PaymentPage: React.FC = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
-
-export default PaymentPage;

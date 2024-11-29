@@ -1,9 +1,10 @@
 'use server';
 
 import { revalidatePath } from "next/cache";
-import prisma from "../../lib/prisma";
+import prisma from "../lib/prisma";
 import md5 from "md5";
 import bcrypt from "bcrypt"
+import { createSession } from "../lib/auth";
 
 const saltRounds = 10;
 
@@ -11,6 +12,20 @@ const saltRounds = 10;
 export async function getUser() {
   try {
     const data = await prisma.user.findMany()
+
+    await prisma.$disconnect()
+    return data
+  } catch (err) {
+    console.log('error in: ' + err)
+    await prisma.$disconnect()
+  }
+}
+
+export async function findUser(userID: string) {
+  try {
+    const data = await prisma.user.findUnique({
+      where: {userID: userID}
+    })
 
     await prisma.$disconnect()
     return data
@@ -41,23 +56,47 @@ export async function login(formdata: FormData) {
       // Validate the password
       const isPasswordCorrect = await bcrypt.compare(passwordStr, user.password);
       if (isPasswordCorrect) {
+        await createSession(user)
         return { success: 'Welcome back!' };
       } else {
         return { error: 'Incorrect password.' };
       }
-    } else {
+    }
+  } catch (err) {
+    console.error('Error during login/registration:', err);
+    return { error: 'An unexpected error occurred. Please try again.' };
+  } finally {
+    // Always disconnect Prisma in the finally block
+    await prisma.$disconnect();
+  }
+}
+
+export async function regis(formdata: FormData) {
+  try {
+    // Extract and validate input
+    const email = formdata.get('email');
+    const password = formdata.get('password');
+
+    if (!email || !password) {
+      return { error: 'Email and password are required.' };
+    }
+
+    const emailStr = String(email);
+    const passwordStr = String(password);
+
+    // Check if the user exists
       // Hash the password and register the user
       const hashedPassword = await bcrypt.hash(passwordStr, saltRounds);
 
-      await prisma.user.create({
+      const newUser= await prisma.user.create({
         data: {
           email: emailStr,
           password: hashedPassword,
         },
       });
 
-      return { success: 'Registration successful. Welcome!' };
-    }
+      await createSession(newUser)
+      return { success: 'Registration successful. Welcome!' }
   } catch (err) {
     console.error('Error during login/registration:', err);
     return { error: 'An unexpected error occurred. Please try again.' };
@@ -112,8 +151,8 @@ export async function addUser(formdata: FormData) {
 export async function editUser(formdata: FormData) {
   try {
     const userID = String(formdata.get('userID'))
-    const email = String(formdata.get('email'))
-    const password = String(formdata.get('password'))
+    const email = formdata.get('email')
+    const password = formdata.get('password')
     const namaDepan = formdata.get('namaDepan')
     const namaBelakang = formdata.get('namaBelakang')
     const telp = formdata.get('telp')
@@ -129,8 +168,8 @@ export async function editUser(formdata: FormData) {
         userID: userID
       },
       data: {
-        email: email,
-        password: password,
+        email: email as string || undefined,
+        password: password as string || undefined,
         namaDepan: namaDepan as string || undefined,
         namaBelakang: namaBelakang as string || undefined,
         telp: telp as string || undefined,

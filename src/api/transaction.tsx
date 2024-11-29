@@ -1,7 +1,7 @@
 'use server'
 
-import { snap } from "../../lib/midtrans/transaction"
-import prisma from "../../lib/prisma"
+import { snap } from "../lib/midtrans/transaction"
+import prisma from "../lib/prisma"
 import { revalidatePath } from "next/cache"
 
 export async function transaction(formData: FormData) {

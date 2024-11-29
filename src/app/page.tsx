@@ -12,7 +12,8 @@ import Clients from "../../components/Partnership/Partnership";
 import React from "react";
 import { Demo } from '../../components/Testimoni/ShowTestimonial';
 import AnimatedMask from '../../components/ShowText/text';
-import TransactionPlans from './page/transaksi/transaction';
+import TransactionPlans from './page/transaksi/ui';
+
 
 // Declare the Home component as a functional component
 const Home: React.FC = () => {

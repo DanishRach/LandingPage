@@ -68,6 +68,7 @@ const Index = () => {
                     color: pathname === "/" ? "white" : "black",
                     textDecoration: "none",
                     cursor: "pointer",
+                    display: pathname === "/page/payment" ? "none" : "inline",
                   }}
                   href="/"
                 >

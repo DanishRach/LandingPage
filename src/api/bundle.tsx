@@ -1,11 +1,28 @@
 'use server'
 
-import prisma from "../../lib/prisma";
+import prisma from "../lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function getLayanan() {
     try{
       const data = await prisma.layanan.findMany()
+
+      await prisma.$disconnect()
+      return data
+    } catch (err) {
+      console.log('error in: '+err)
+      await prisma.$disconnect()
+
+    }
+  }
+
+  export async function findLayanan(layananID:string) {
+    try{
+      const data = await prisma.layanan.findUnique({
+        where:{
+          layananID: layananID
+        }
+      })
 
       await prisma.$disconnect()
       return data

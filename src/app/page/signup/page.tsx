@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Container, CircularProgress, Link } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { login } from '@/api/user';
+import { login, regis } from '@/api/user';
 import { toast } from 'sonner';
 
 export default function SignUpForm ()  {
@@ -27,11 +27,11 @@ export default function SignUpForm ()  {
     const formData = new FormData()
     if(email) formData.append('email', email)
     if(password) formData.append('password', password)
-    const result = await login(formData)
-    if (result.error) {
+    const result = await regis(formData)
+    if (result !== undefined && result.error) {
       toast.error(result.error)
       setLoading(false)
-    } else {
+    } else if(result !== undefined && result.success) {
       toast.success(result.success)
       router.push('/')
     }

@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { login } from "@/api/user";
+import { login, regis } from "@/api/user";
 import { toast } from "sonner";
 
 export default function LoginForm() {
@@ -30,10 +30,10 @@ export default function LoginForm() {
     if(email) formData.append('email', email)
     if(password) formData.append('password', password)
     const result = await login(formData)
-    if (result.error) {
+    if (result !== undefined && result.error) {
       toast.error(result.error)
       setLoading(false)
-    } else {
+    } else if(result !== undefined && result.success) {
       toast.success(result.success)
       router.push('/')
     }
