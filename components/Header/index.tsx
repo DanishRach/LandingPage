@@ -21,17 +21,17 @@ const Index = () => {
 
   // Reset isActive state when pathname changes
   async function chekLogin() {
-    const data = await getSession()
-    const user = data?.data
+    const data = await getSession();
+    const user = data?.data;
     if (user) {
-      setIsLogin(true)
+      setIsLogin(true);
     } else {
-      setIsLogin(false)
+      setIsLogin(false);
     }
   }
   useEffect(() => {
     if (isActive) setIsActive(true);
-    chekLogin()
+    chekLogin();
   }, [pathname, isActive]);
 
   function coba() {
@@ -92,6 +92,21 @@ const Index = () => {
               <div className={styles.el}>
                 <Link
                   style={{
+                    color: pathname === "/" ? "white" : "black",
+                    textDecoration: "none",
+                    cursor: "pointer",
+                  }}
+                  href="/page/profile"
+                >
+                  Profile
+                </Link>
+                <div className={styles.indicator}></div>
+              </div>
+            </Magnetic>
+            <Magnetic>
+              <div className={styles.el}>
+                <Link
+                  style={{
                     textDecoration: "none",
                     cursor: "pointer",
                   }}
@@ -116,7 +131,6 @@ const Index = () => {
                 <div className={styles.indicator}></div>
               </div>
             </Magnetic>
-
           </div>
         ) : (
           <div className={styles.nav}>
@@ -144,48 +158,48 @@ const Index = () => {
                     textDecoration: "none",
                     cursor: "pointer",
                   }}
-                  href="/page/inbox"
+                  href="/page/profile"
                 >
-                  inbox
+                  Profile
                 </Link>
                 <div className={styles.indicator}></div>
               </div>
             </Magnetic>
-            {isLogin?
-            <Magnetic>
-            <div className={styles.el}>
-              <Link
-                onClick={async () => {
-                  await deleteSession();
-                }}
-                style={{
-                  textDecoration: "none",
-                  cursor: "pointer",
-                }}
-                href="/page/form"
-              >
-                Log Out
-              </Link>
-              <div className={styles.indicator}></div>
-            </div>
-          </Magnetic>
-            :
-            <Magnetic>
-            <div className={styles.el}>
-              <Link
-                style={{
-                  color: pathname === "/" ? "white" : "black",
-                  textDecoration: "none",
-                  cursor: "pointer",
-                }}
-                href="/page/form"
-              >
-                Login
-              </Link>
-              <div className={styles.indicator}></div>
-            </div>
-          </Magnetic>}
-            
+            {isLogin ? (
+              <Magnetic>
+                <div className={styles.el}>
+                  <Link
+                    onClick={async () => {
+                      await deleteSession();
+                    }}
+                    style={{
+                      textDecoration: "none",
+                      cursor: "pointer",
+                    }}
+                    href="/page/form"
+                  >
+                    Log Out
+                  </Link>
+                  <div className={styles.indicator}></div>
+                </div>
+              </Magnetic>
+            ) : (
+              <Magnetic>
+                <div className={styles.el}>
+                  <Link
+                    style={{
+                      color: pathname === "/" ? "white" : "black",
+                      textDecoration: "none",
+                      cursor: "pointer",
+                    }}
+                    href="/page/form"
+                  >
+                    Login
+                  </Link>
+                  <div className={styles.indicator}></div>
+                </div>
+              </Magnetic>
+            )}
           </div>
         )}
       </div>
