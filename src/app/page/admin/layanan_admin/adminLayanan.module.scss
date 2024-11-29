@@ -1,44 +1,47 @@
 .container {
   padding: 2rem;
   min-height: 100vh;
-  background: linear-gradient(135deg, #ffffff, #e6e9f0);
+  background: linear-gradient(135deg, #f0f4f8, #d9e4f5);
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: "Inter", sans-serif;
 }
 
 .title {
   font-size: 2.5rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 2rem;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 800;
+  color: #2d3748;
+  margin-bottom: 2.5rem;
+  text-align: center;
 }
 
 .form-container {
   width: 100%;
-  max-width: 40rem;
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+  max-width: 42rem;
+  background: #ffffff;
+  border-radius: 1.2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
   margin-bottom: 3rem;
 }
 
 .input,
 .textarea {
   width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid #dcdfe6;
-  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.2rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.8rem;
   background-color: #f9fafc;
+  font-size: 1rem;
   transition: all 0.3s ease;
+
   &:focus {
-    border-color: #5a67d8;
-    background-color: #fff;
+    border-color: #667eea;
+    background-color: #ffffff;
     outline: none;
-    box-shadow: 0 0 5px rgba(90, 103, 216, 0.5);
+    box-shadow: 0 0 6px rgba(102, 126, 234, 0.5);
   }
 }
 
@@ -48,99 +51,177 @@
 }
 
 .button {
+  margin-bottom: 15px;
   width: 100%;
-  padding: 0.75rem;
-  font-weight: 600;
+  padding: 1rem;
+  font-weight: 700;
   font-size: 1rem;
-  color: #fff;
+  color: #ffffff;
   background: linear-gradient(135deg, #667eea, #764ba2);
   border: none;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 0.8rem;
   transition: all 0.3s ease;
   cursor: pointer;
+
   &:hover {
     background: linear-gradient(135deg, #5a67d8, #6b46c1);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
   }
 }
 
 .list-title {
   font-size: 2rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
 .cardContainer {
   display: flex;
-  flex-wrap: nowrap; /* Prevent cards from wrapping */
-  gap: 1.5rem; /* Space between cards */
-  justify-content: flex-start; /* Align cards to the left */
-  overflow-x: auto; /* Allow horizontal scrolling if there are too many cards */
-  padding: 1rem 0; /* Optional: Add padding for spacing */
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  padding: 1.5rem 0;
 }
 
 .card {
-  flex: 0 0 auto; /* Prevent the cards from growing or shrinking */
-  width: 300px; /* Set a fixed width for each card */
+  width: 320px;
   background-color: white;
-  border-radius: 0.75rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  border-top: 4px solid #9f7aea;
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border-top: 6px solid #667eea;
   transition: 0.3s;
 
   &:hover {
     border-color: #f7a4cf;
-    transform: scale(1.05); /* Slightly enlarge card on hover */
+    transform: translateY(-10px);
   }
 }
 
 .card h3 {
-  font-size: 1.25rem;
-  color: #333;
-  font-weight: 600;
+  font-size: 1.5rem;
+  color: #2d3748;
+  font-weight: 700;
 }
 
 .card p {
-  font-size: 0.875rem;
-  color: #555;
+  font-size: 0.9rem;
+  color: #4a5568;
+  margin-bottom: 1rem;
   line-height: 1.6;
+}
+
+.card ul {
+  margin-top: 0.5rem;
+  padding-left: 1.5rem;
+  list-style-type: disc;
 }
 
 .card-footer {
   display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
 .edit-button,
 .delete-button {
   flex: 1;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 0.6rem;
   font-weight: 600;
   font-size: 0.875rem;
   transition: all 0.3s ease;
   cursor: pointer;
   text-align: center;
+  text-transform: uppercase;
 }
 
-.edit-button {
-  background-color: #48bb78;
-  color: #fff;
-  margin-right: 0.5rem;
+.editButton {
+  margin-left: 10px;
+  padding: 0.5rem 1rem; /* Equivalent to px-4 py-2 */
+  background-color: #ffffff; /* Equivalent to bg-red-100 */
+  color: #3edc26; /* Equivalent to text-red-600 */
+  font-weight: 500; /* Equivalent to font-medium */
+  border-radius: 0.5rem; /* Equivalent to rounded-lg */
+  transition: background-color 0.2s ease; /* Equivalent to transition duration-200 */
+
   &:hover {
-    background-color: #38a169;
+    background-color: #cdfdad; /* Equivalent to hover:bg-red-200 */
   }
 }
 
-.delete-button {
-  background-color: #e53e3e;
-  color: #fff;
-  margin-left: 0.5rem;
+.deleteButton {
+  margin-left: 10px;
+  padding: 0.5rem 1rem; /* Equivalent to px-4 py-2 */
+  background-color: #ffffff; /* Equivalent to bg-red-100 */
+  color: #dc2626; /* Equivalent to text-red-600 */
+  font-weight: 500; /* Equivalent to font-medium */
+  border-radius: 0.5rem; /* Equivalent to rounded-lg */
+  transition: background-color 0.2s ease; /* Equivalent to transition duration-200 */
+
   &:hover {
-    background-color: #c53030;
+    background-color: #fecaca; /* Equivalent to hover:bg-red-200 */
+  }
+}
+
+.remove-button {
+  margin-left: 10px;
+  padding: 0.5rem 1rem; /* Equivalent to px-4 py-2 */
+  background-color: #fee2e2; /* Equivalent to bg-red-100 */
+  color: #dc2626; /* Equivalent to text-red-600 */
+  font-weight: 500; /* Equivalent to font-medium */
+  border-radius: 0.5rem; /* Equivalent to rounded-lg */
+  transition: background-color 0.2s ease; /* Equivalent to transition duration-200 */
+
+  &:hover {
+    background-color: #fecaca; /* Equivalent to hover:bg-red-200 */
+  }
+}
+
+.input-container {
+  align-items: center;
+  position: relative; /* Enables positioning of the button relative to the container */
+  display: flex; /* Use flexbox to align the button and input */
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.input {
+  margin-bottom: 1px;
+  flex-grow: 1; /* Ensures input takes up remaining space */
+  padding: 0.5rem 1rem; /* Adjust padding for a clean design */
+  font-size: 1rem;
+  border: 1px solid #d1d5db; /* Light gray border */
+  border-radius: 0.5rem; /* Rounded corners */
+  outline: none;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    border-color: #3b82f6; /* Blue border on focus */
+  }
+}
+
+.input2 {
+  margin-bottom: 20px;
+}
+
+.add-button {
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #3b82f6; /* Blue background */
+  color: #ffffff; /* White text */
+  font-size: 0.875rem; /* Slightly smaller text */
+  font-weight: 500;
+  border: none;
+  border-radius: 0.3rem; /* Slightly rounded corners */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #2563eb; /* Darker blue on hover */
   }
 }

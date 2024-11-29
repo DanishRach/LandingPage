@@ -4,6 +4,8 @@ import styles from "./transaction.module.scss"; // Import SCSS file
 import { useRouter } from "next/navigation";
 import { layananProps } from "../../../../types/types";
 import { getLayanan } from "@/api/bundle";
+import { getSession } from "@/lib/auth";
+import { toast } from "sonner";
 
 interface Plan {
   layananData: layananProps[] | undefined
@@ -103,7 +105,16 @@ export default function Ui () {
 
               <button
                 className={styles.button}
-                onClick={() => handleSelectPlan(plan)}
+                onClick={async () => {
+                  const data = await getSession()
+                  if(data){
+                    handleSelectPlan(plan)
+                  }else {
+                    toast.error('mohon login terlebih dahulu')
+                    router.push('/page/form')
+                  }
+                  
+                }}
               >
                 Pilih Paket
               </button>

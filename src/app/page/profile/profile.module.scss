@@ -1,0 +1,102 @@
+.profile-utama {
+  margin-top: 100px;
+}
+
+.profile-container {
+  width: 100%;
+  max-width: 700px; /* Increased the width for better form spacing */
+  margin: 0 auto;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Deeper shadow for modern feel */
+  max-height: 80vh; /* Limit the maximum height of the form container */
+  overflow-y: auto; /* Allow vertical scrolling if content overflows */
+}
+
+.profile-container::-webkit-scrollbar {
+    display: none; /* Hides the scrollbar */
+  }
+
+.profile-header {
+  font-size: 28px; /* Larger font size for the header */
+  font-weight: 600;
+  margin-bottom: 30px; /* More spacing to distinguish sections */
+  text-align: center;
+  color: #333; /* Darker color for the header */
+}
+
+.section-title {
+  font-size: 20px; /* Slightly larger text for section titles */
+  margin-top: 30px;
+  font-weight: 600;
+  color: #007bff; /* Accent color for section titles */
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Increased gap for clearer separation between form fields */
+  margin-bottom: 20px;
+}
+
+.input-group input,
+.input-group textarea {
+  padding: 12px; /* Increased padding for better input field size */
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px; /* Rounded borders for a modern look */
+  width: 100%;
+  box-sizing: border-box; /* Ensures padding does not affect overall width */
+  transition: border-color 0.3s ease;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+  border-color: #007bff; /* Highlight border on focus */
+  outline: none;
+}
+
+.change-password-btn {
+  padding: 12px 20px; /* Add more padding for better button size */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px; /* Rounded button corners */
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s, transform 0.2s; /* Added a hover scale effect */
+}
+
+.change-password-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05); /* Subtle zoom effect on hover */
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px; /* Slightly larger button padding */
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px; /* Consistent rounded corners */
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s; /* Hover effect and smooth transitions */
+}
+
+.submit-btn:hover {
+  background-color: #218838;
+  transform: scale(1.05); /* Button zoom effect */
+}
+
+/* Optional: Adding a subtle background color for the form to make it stand out */
+.profile-container {
+  background-color: #f9f9f9;
+}
+
+.input-group {
+  background-color: #f4f6f9; /* Light gray background for input fields */
+  padding: 10px;
+  border-radius: 8px;
+}

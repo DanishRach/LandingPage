@@ -57,7 +57,10 @@ export async function login(formdata: FormData) {
       const isPasswordCorrect = await bcrypt.compare(passwordStr, user.password);
       if (isPasswordCorrect) {
         await createSession(user)
-        return { success: 'Welcome back!' };
+        return { 
+          role: user.role,
+          success: 'Welcome back!' 
+        };
       } else {
         return { error: 'Incorrect password.' };
       }

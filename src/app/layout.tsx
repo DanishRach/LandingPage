@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import React from "react";
 import Header from "../../components/Header";
 import { Toaster } from "sonner";
+import { usePathname } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Toaster richColors/>
+        <Toaster richColors />
         <Header />
         {children}
       </body>

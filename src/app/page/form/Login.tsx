@@ -35,7 +35,11 @@ export default function LoginForm() {
       setLoading(false)
     } else if(result !== undefined && result.success) {
       toast.success(result.success)
-      router.push('/')
+      if (result.role === 'ADMIN') {
+        router.push('/page/admin/user')
+      } else {
+        router.push('/')
+      }
     }
   };
 
