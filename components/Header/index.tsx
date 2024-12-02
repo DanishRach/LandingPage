@@ -95,20 +95,6 @@ const Index = () => {
                     textDecoration: "none",
                     cursor: "pointer",
                   }}
-                  href="/page/profile"
-                >
-                  Profile
-                </Link>
-                <div className={styles.indicator}></div>
-              </div>
-            </Magnetic>
-            <Magnetic>
-              <div className={styles.el}>
-                <Link
-                  style={{
-                    textDecoration: "none",
-                    cursor: "pointer",
-                  }}
                   href="/page/admin/project"
                 >
                   Project

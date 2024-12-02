@@ -11,17 +11,13 @@ const navItems = [
     href: "/",
   },
   {
-    title: "Product",
-    href: "/page/product",
+    title: "Profile",
+    href: "/page/profile",
   },
   {
     title: "Contact",
     href: "/contact",
-  },
-  {
-    title: "Login",
-    href: "/about",
-  },
+  }
 ];
 
 export default function Index() {  // Rename here

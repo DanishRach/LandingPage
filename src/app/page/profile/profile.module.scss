@@ -15,16 +15,6 @@
   height: 100%; /* Ensure the container can expand to fit content */
 }
 
-.profile-container::-webkit-scrollbar {
-  width: 8px; /* Optional: Styling for the scrollbar */
-  display: none;
-}
-
-.profile-container::-webkit-scrollbar-thumb {
-  background-color: #007bff;
-  border-radius: 4px;
-}
-
 .profile-header {
   font-size: 28px; /* Larger font size for the header */
   font-weight: 600;

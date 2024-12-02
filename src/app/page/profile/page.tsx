@@ -6,6 +6,8 @@ import { getSession } from "@/lib/auth";
 import { editUser, findUser } from "@/api/user";
 import { toast } from "sonner";
 import styles from "./profile.module.scss";
+import { AnimatePresence } from "framer-motion";
+import PreloaderPro from "../../../../components/PreloaderPro";
 
 export default function Page() {
   const [user, setUser] = useState<userProps>();
@@ -34,6 +36,22 @@ export default function Page() {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    (async () => {
+      // Dynamically import LocomotiveScroll and initialize it
+      const LocomotiveScroll = (await import("locomotive-scroll")).default;
+      const locomotiveScroll = new LocomotiveScroll();
+
+      setTimeout(() => {
+        setIsLoading(false);
+        document.body.style.cursor = "default";
+        window.scrollTo(0, 0);
+      }, 2000);
+    })();
+  }, []);
 
   async function submit() {
     try {
@@ -73,96 +91,101 @@ export default function Page() {
   }, []);
 
   return (
-    <div className={styles["profile-utama"]}>
-      <div className={styles["profile-container"]}>
-        <p className={styles["profile-header"]}>Edit Profile</p>
-        <div className={styles["input-group"]}>
-          <input type="hidden" value={formData.userID} />
-          <input
-            type="text"
-            name="namaDepan"
-            value={formData.namaDepan || user?.namaDepan!}
-            onChange={handleChange}
-            placeholder="First Name"
-          />
-          <input
-            type="text"
-            name="namaBelakang"
-            value={formData.namaBelakang || user?.namaBelakang!}
-            onChange={handleChange}
-            placeholder="Last Name"
-          />
-        </div>
-        <p className={styles["section-title"]}>Account</p>
-        <div className={styles["input-group"]}>
-          <input
-            type="email"
-            name="email"
-            value={formData.email || user?.email!}
-            onChange={handleChange}
-            placeholder="Email"
-          />
-          <button
-            className={styles["change-password-btn"]}
-            onClick={togglePasswordVisibility}
-          >
-            Change Password
+    <div>
+      <AnimatePresence mode="wait">
+        {isLoading && <PreloaderPro />}
+      </AnimatePresence>
+      <div className={styles["profile-utama"]}>
+        <div className={styles["profile-container"]}>
+          <p className={styles["profile-header"]}>Edit Profile</p>
+          <div className={styles["input-group"]}>
+            <input type="hidden" value={formData.userID} />
+            <input
+              type="text"
+              name="namaDepan"
+              value={formData.namaDepan || user?.namaDepan!}
+              onChange={handleChange}
+              placeholder="First Name"
+            />
+            <input
+              type="text"
+              name="namaBelakang"
+              value={formData.namaBelakang || user?.namaBelakang!}
+              onChange={handleChange}
+              placeholder="Last Name"
+            />
+          </div>
+          <p className={styles["section-title"]}>Account</p>
+          <div className={styles["input-group"]}>
+            <input
+              type="email"
+              name="email"
+              value={formData.email || user?.email!}
+              onChange={handleChange}
+              placeholder="Email"
+            />
+            <button
+              className={styles["change-password-btn"]}
+              onClick={togglePasswordVisibility}
+            >
+              Change Password
+            </button>
+            {showPassword && (
+              <div className={styles["input-group"]}>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password || user?.password!}
+                  onChange={handleChange}
+                  placeholder="Password"
+                />
+              </div>
+            )}
+          </div>
+          <div className={styles["input-group"]}>
+            <input
+              type="tel"
+              name="telp"
+              value={formData.telp || user?.telp!}
+              onChange={handleChange}
+              placeholder="Phone Number"
+            />
+          </div>
+          <p className={styles["section-title"]}>Address</p>
+          <div className={styles["input-group"]}>
+            <input
+              type="text"
+              name="provinsi"
+              value={formData.provinsi || user?.provinsi!}
+              onChange={handleChange}
+              placeholder="Province"
+            />
+            <input
+              type="text"
+              name="kota"
+              value={formData.kota || user?.kota!}
+              onChange={handleChange}
+              placeholder="City"
+            />
+            <input
+              type="text"
+              name="alamat"
+              value={formData.alamat || user?.alamat!}
+              onChange={handleChange}
+              placeholder="Address"
+            />
+            <input
+              type="text"
+              name="kodePos"
+              value={formData.kodePos || user?.kodePos!}
+              onChange={handleChange}
+              placeholder="Postal Code"
+            />
+          </div>
+          <button className={styles["submit-btn"]} onClick={submit}>
+            Save Changes
           </button>
-          {showPassword && (
-            <div className={styles["input-group"]}>
-              <input
-                type="password"
-                name="password"
-                value={formData.password || user?.password!}
-                onChange={handleChange}
-                placeholder="Password"
-              />
-            </div>
-          )}
         </div>
-        <div className={styles["input-group"]}>
-          <input
-            type="tel"
-            name="telp"
-            value={formData.telp || user?.telp!}
-            onChange={handleChange}
-            placeholder="Phone Number"
-          />
-        </div>
-        <p className={styles["section-title"]}>Address</p>
-        <div className={styles["input-group"]}>
-          <input
-            type="text"
-            name="provinsi"
-            value={formData.provinsi || user?.provinsi!}
-            onChange={handleChange}
-            placeholder="Province"
-          />
-          <input
-            type="text"
-            name="kota"
-            value={formData.kota || user?.kota!}
-            onChange={handleChange}
-            placeholder="City"
-          />
-          <input
-            type="text"
-            name="alamat"
-            value={formData.alamat || user?.alamat!}
-            onChange={handleChange}
-            placeholder="Address"
-          />
-          <input
-            type="text"
-            name="kodePos"
-            value={formData.kodePos || user?.kodePos!}
-            onChange={handleChange}
-            placeholder="Postal Code"
-          />
-        </div>
-        <button className={styles["submit-btn"]} onClick={submit}>
-          Save Changes
-        </button>
       </div>
     </div>
   );

@@ -44,7 +44,7 @@ export default function Index() {
             initial="initial"
             animate="enter"
           >
-            Product
+            Profile
           </motion.p>
           <svg>
             <motion.path
