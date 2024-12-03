@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import styles from './page.module.scss'; // Import the SCSS file
 import { projectProps } from "../../../../../types/types";
+import { editProject } from "@/api/project";
+import { toast } from "sonner";
 
 interface TableProps {
   rows: projectProps[] | undefined;
@@ -14,8 +16,10 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
   const [isSelectAll, setIsSelectAll] = useState<boolean>(false);
   const [visibleColumns, setVisibleColumns] = useState({
     projectID: true,
+    namaDomain: true,
     domain: true,
     project: true,
+    sdhDeplo: true,
     tagihan: true,
     createdAt: true,
     tenggat: true,
@@ -52,11 +56,35 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
   };
 
   // Handle column visibility toggle
-  const toggleColumnVisibility = (column: "projectID"|"domain"|"project"|"tagihan"| "createdAt"| "tenggat"| "userID"|"layananID") => {
+  const toggleColumnVisibility = (column: "projectID"|"domain"|"namaDomain"|"project"|"sdhDeplo"|"tagihan"| "createdAt"| "tenggat"| "userID"|"layananID") => {
     setVisibleColumns((prev) => ({
       ...prev,
       [column]: !prev[column],
     }));
+  };
+
+  const changeStatus = async (projectID: string, status : boolean) => {
+    try {
+
+      let sdhDeplo = false
+      if (status == true) {
+        sdhDeplo = false
+      } else if (status == false) {
+        sdhDeplo = true
+      }
+      const formData = new FormData();
+      if (projectID) formData.append("projectID", projectID);
+      if (sdhDeplo) formData.append("sdhDeplo", String(sdhDeplo));
+      const result = await editProject(formData);
+      if (result.error) {
+        toast.error(result.error);
+      } else {
+        toast.success(result.success);
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("something wrong");
+    }
   };
 
   return (
@@ -91,6 +119,15 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
               <label className="block mb-1">
                 <input
                   type="checkbox"
+                  checked={visibleColumns.namaDomain}
+                  onChange={() => toggleColumnVisibility("namaDomain")}
+                  className="mr-2"
+                />
+                nama domain
+              </label>
+              <label className="block mb-1">
+                <input
+                  type="checkbox"
                   checked={visibleColumns.domain}
                   onChange={() => toggleColumnVisibility("domain")}
                   className="mr-2"
@@ -105,6 +142,15 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
                   className="mr-2"
                 />
                 tagihan
+              </label>
+              <label className="block mb-1">
+                <input
+                  type="checkbox"
+                  checked={visibleColumns.sdhDeplo}
+                  onChange={() => toggleColumnVisibility("sdhDeplo")}
+                  className="mr-2"
+                />
+                Sudah Deploy
               </label>
               <label className="block mb-1">
                 <input
@@ -164,8 +210,14 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
               {visibleColumns.project && (
                 <th className="p-2 border-b border-gray-700">project</th>
               )}
+              {visibleColumns.namaDomain && (
+                <th className="p-2 border-b border-gray-700">nama domain</th>
+              )}
               {visibleColumns.domain && (
                 <th className="p-2 border-b border-gray-700">domain</th>
+              )}
+              {visibleColumns.sdhDeplo && (
+                <th className="p-2 border-b border-gray-700">deploy</th>
               )}
               {visibleColumns.tagihan && (
                 <th className="p-2 border-b border-gray-700">tagihan</th>
@@ -202,8 +254,20 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
                 {visibleColumns.project && (
                   <td className="p-2 border-b border-gray-700">{row.project}</td>
                 )}
+                {visibleColumns.namaDomain && (
+                  <td className="p-2 border-b border-gray-700">{row.namaDomain}</td>
+                )}
                 {visibleColumns.domain && (
                   <td className="p-2 border-b border-gray-700">{row.domain}</td>
+                )}
+                {visibleColumns.sdhDeplo && (
+                  <td className="p-2 border-b border-gray-700">
+                    {row.sdhDeplo == true?
+                    <button onClick={() => changeStatus(row.projectID, row.sdhDeplo)}>sudah</button>
+                    :  
+                    <button onClick={() => changeStatus(row.projectID, row.sdhDeplo)}>belum</button>
+                  }
+                  </td>
                 )}
                 {visibleColumns.tagihan && (
                   <td className="p-2 border-b border-gray-700">{row.tagihan}</td>

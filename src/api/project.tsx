@@ -54,6 +54,7 @@ export async function addProject(formData: FormData) {
     try {
         const userID = String(formData.get('userID'))
         const domain = formData.get('domain')
+        const namaDomain = formData.get('namaDomain')
         const project = formData.get('project')
         const layananID = String(formData.get('layananID'))
 
@@ -66,6 +67,7 @@ export async function addProject(formData: FormData) {
         await prisma.project.create({
             data: {
                 project: project as string,
+                namaDomain: namaDomain as string,
                 domain: domain as Domain,
                 userID: userID,
                 layananID: layananID,
@@ -134,10 +136,6 @@ export async function payProject(formData: FormData) {
             }
         })
 
-        console.log('tagihan sisa: '+tagihanSisa)
-        console.log('tenggat lama: '+tenggatLama)
-        console.log('tenggat baru: '+tenggatBaru)
-
         await prisma.$disconnect()
         revalidatePath('/')
         return {
@@ -155,33 +153,53 @@ export async function payProject(formData: FormData) {
 export async function editProject(formData: FormData) {
     try {
         const projectID = String(formData.get('projectID'))
-        const userID = String(formData.get('userID'))
+        const userID = formData.get('userID')
+        const namaDomain = formData.get('namaDomain')
         const domain = formData.get('domain')
         const project = formData.get('project')
-        const layananID = String(formData.get('layananID'))
+        const sdhDeplo = Boolean(formData.get('sdhDeplo'))
+        const layananID = formData.get('layananID')
 
+        if (layananID) {
+    
+            const dataLayanan = await prisma.layanan.findUnique({
+                where: {
+                    layananID: layananID as string
+                }
+            })
 
-        const dataLayanan = await prisma.layanan.findUnique({
-            where: {
-                layananID: layananID
-            }
-        })
-
-        await prisma.project.update({
-            where: {
-                projectID: projectID
-            },
-            data: {
-                project: project as string || undefined,
-                domain: domain as Domain || undefined,
-                userID: userID,
-                layananID: layananID,
-                tagihan: dataLayanan?.harga as number
-            }
-        })
+            await prisma.project.update({
+                where: {
+                    projectID: projectID
+                },
+                data: {
+                    project: project as string || undefined,
+                    namaDomain: namaDomain as string || undefined,
+                    domain: domain as Domain || undefined,
+                    sdhDeplo: sdhDeplo,
+                    userID: userID as string || undefined,
+                    layananID: layananID as string,
+                    tagihan: dataLayanan?.harga as number || undefined
+                }
+            })
+        } else {
+            console.log(sdhDeplo)
+            await prisma.project.update({
+                where: {
+                    projectID: projectID
+                },
+                data: {
+                    project: project as string || undefined,
+                    namaDomain: namaDomain as string || undefined,
+                    domain: domain as Domain || undefined,
+                    sdhDeplo: sdhDeplo,
+                    userID: userID as string || undefined,
+                }
+            })
+        }
 
         await prisma.$disconnect()
-        revalidatePath('/')
+        revalidatePath('/','layout')
         return {
             success: 'success edit project'
         }

@@ -33,9 +33,11 @@ model Project {
   projectID String @id @default(auto()) @map("_id") @db.ObjectId
   domain    Domain
   project   String
+  namaDomain String
   tagihan   Int
   createdAt DateTime
   tenggat DateTime
+  sdhDeplo Boolean @default(false)
   userID    String @db.ObjectId
   layananID String @db.ObjectId
 

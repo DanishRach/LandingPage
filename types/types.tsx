@@ -16,8 +16,10 @@ export interface userProps {
 
 export interface projectProps {
     projectID: string
+    namaDomain: string
     domain: string
     project: string
+    sdhDeplo: boolean
     tagihan: number
     createdAt: Date
     tenggat: Date

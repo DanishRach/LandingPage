@@ -30,6 +30,7 @@ interface SnapPayOptions {
 const PaymentPageContent = () => {
   const [userLogin, setUserLogin] = useState<userProps | undefined>(undefined);
   const [project, setProject] = useState<string>("");
+  const [namaDomain, setNamaDomain] = useState<string>("");
   const [domain, setDomain] = useState<string>("");
 
   const [email, setEmail] = useState<string>("");
@@ -86,7 +87,10 @@ const PaymentPageContent = () => {
     if (kota) formData.append("kota", kota);
     if (alamat) formData.append("alamat", alamat);
     if (kodePos) formData.append("kodePos", kodePos);
+
+
     if (project) formData.append("project", project);
+    if (namaDomain) formData.append("namaDomain", namaDomain);
     if (domain) formData.append("domain", domain);
 
     const userID = userLogin?.userID;
@@ -195,7 +199,14 @@ const PaymentPageContent = () => {
                   value={project}
                   onChange={(e) => setProject(e.target.value)}
                   type="text"
-                  placeholder="Project"
+                  placeholder="Github Project"
+                  required
+                />
+                <input
+                  value={namaDomain}
+                  onChange={(e) => setNamaDomain(e.target.value)}
+                  type="text"
+                  placeholder="Domain"
                   required
                 />
                 <select
