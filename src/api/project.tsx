@@ -3,6 +3,8 @@
 import { Domain } from "@prisma/client";
 import prisma from "../lib/prisma";
 import { revalidatePath } from "next/cache";
+import { mail } from "./mailer";
+import { error } from "console";
 
 
 export async function getProject() {
@@ -64,6 +66,18 @@ export async function addProject(formData: FormData) {
 
         const due = today.toISOString()
 
+        const user = await prisma.user.findUnique({
+            where:{
+                userID: userID
+            }
+        })
+        
+        const layanan = await prisma.layanan.findUnique({
+            where:{
+                layananID: layananID
+            }
+        })
+
         await prisma.project.create({
             data: {
                 project: project as string,
@@ -78,6 +92,12 @@ export async function addProject(formData: FormData) {
         })
 
         await prisma.$disconnect()
+        const message = await mail('penambahan data',user?.namaDepan! ,  user?.email!,layanan?.judul!, JSON.stringify(namaDomain) , JSON.stringify(domain))
+        if (message.error){
+            return{
+                error: message.error
+            }
+        }
         revalidatePath('/')
         return {
             success: 'success add project'
