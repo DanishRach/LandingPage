@@ -2,15 +2,20 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "./page.module.scss"; // Import the SCSS file
-import { projectProps } from "../../../../../types/types";
+import { layananProps, projectProps, userProps } from "../../../../../types/types";
 import { editProject } from "@/api/project";
 import { toast } from "sonner";
+import moment from "moment"
+import { getUser } from "@/api/user";
+import { getLayanan } from "@/api/bundle";
 
 interface TableProps {
   rows: projectProps[] | undefined;
+  userData: userProps[] | undefined;
+  layananData: layananProps[] | undefined;
 }
 
-const Table: React.FC<TableProps> = ({ rows = [] }) => {
+const Table: React.FC<TableProps> = ({ rows = [], userData =[], layananData =[]}) => {
   const [filter, setFilter] = useState<string>("");
   const [checkedRows, setCheckedRows] = useState<boolean[]>(
     Array(rows.length).fill(false)
@@ -99,6 +104,21 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
       toast.error("something wrong");
     }
   };
+
+  const userEmail =(userID: string) => {
+    if(userID !== null && userData){
+      const user = userData.find((item) => item.userID === userID)
+
+      return user?.email
+    }
+  }
+  const layananName =(layananID: string) => {
+    if(layananID !== null && layananData){
+      const layanan = layananData.find((item) => item.layananID === layananID)
+
+      return layanan?.judul
+    }
+  }
 
   return (
     <div className={styles["table-container"]}>
@@ -242,10 +262,10 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
                 <th className="p-2 border-b border-gray-700">tenggat</th>
               )}
               {visibleColumns.userID && (
-                <th className="p-2 border-b border-gray-700">userID</th>
+                <th className="p-2 border-b border-gray-700">user</th>
               )}
               {visibleColumns.layananID && (
-                <th className="p-2 border-b border-gray-700">layananID</th>
+                <th className="p-2 border-b border-gray-700">layanan</th>
               )}
             </tr>
           </thead>
@@ -306,20 +326,20 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
                 )}
                 {visibleColumns.createdAt && (
                   <td className="p-2 border-b border-gray-700">
-                    {row.createdAt.toLocaleDateString()}
+                    {moment(row.createdAt).format('MM/DD/YYYY')}
                   </td>
                 )}
                 {visibleColumns.tenggat && (
                   <td className="p-2 border-b border-gray-700">
-                    {row.tenggat.toLocaleDateString()}
+                    {moment(row.tenggat).format('MM/DD/YYYY')}
                   </td>
                 )}
                 {visibleColumns.userID && (
-                  <td className="p-2 border-b border-gray-700">{row.userID}</td>
+                  <td className="p-2 border-b border-gray-700">{userEmail(row.userID)}</td>
                 )}
                 {visibleColumns.layananID && (
                   <td className="p-2 border-b border-gray-700">
-                    {row.layananID}
+                    {layananName(row.layananID)}
                   </td>
                 )}
                 <td className="p-2 border-b border-gray-700">...</td>
