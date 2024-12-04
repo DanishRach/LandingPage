@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import styles from './page.module.scss'; // Import the SCSS file
+import styles from "./page.module.scss"; // Import the SCSS file
 import { projectProps } from "../../../../../types/types";
 import { editProject } from "@/api/project";
 import { toast } from "sonner";
@@ -12,7 +12,9 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = ({ rows = [] }) => {
   const [filter, setFilter] = useState<string>("");
-  const [checkedRows, setCheckedRows] = useState<boolean[]>(Array(rows.length).fill(false));
+  const [checkedRows, setCheckedRows] = useState<boolean[]>(
+    Array(rows.length).fill(false)
+  );
   const [isSelectAll, setIsSelectAll] = useState<boolean>(false);
   const [visibleColumns, setVisibleColumns] = useState({
     projectID: true,
@@ -56,21 +58,32 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
   };
 
   // Handle column visibility toggle
-  const toggleColumnVisibility = (column: "projectID"|"domain"|"namaDomain"|"project"|"sdhDeplo"|"tagihan"| "createdAt"| "tenggat"| "userID"|"layananID") => {
+  const toggleColumnVisibility = (
+    column:
+      | "projectID"
+      | "domain"
+      | "namaDomain"
+      | "project"
+      | "sdhDeplo"
+      | "tagihan"
+      | "createdAt"
+      | "tenggat"
+      | "userID"
+      | "layananID"
+  ) => {
     setVisibleColumns((prev) => ({
       ...prev,
       [column]: !prev[column],
     }));
   };
 
-  const changeStatus = async (projectID: string, status : boolean) => {
+  const changeStatus = async (projectID: string, status: boolean) => {
     try {
-
-      let sdhDeplo = false
+      let sdhDeplo = false;
       if (status == true) {
-        sdhDeplo = false
+        sdhDeplo = false;
       } else if (status == false) {
-        sdhDeplo = true
+        sdhDeplo = true;
       }
       const formData = new FormData();
       if (projectID) formData.append("projectID", projectID);
@@ -88,25 +101,25 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
   };
 
   return (
-    <div className={styles['table-container']}>
+    <div className={styles["table-container"]}>
       {/* Filter Input and Columns Button */}
-      <div className={styles['filter-container']}>
+      <div className={styles["filter-container"]}>
         <input
           type="text"
           placeholder="Filter emails..."
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className={styles['filter-input']}
+          className={styles["filter-input"]}
         />
-        <div className={styles['columns-dropdown-wrapper']}>
+        <div className={styles["columns-dropdown-wrapper"]}>
           <button
-            className={styles['columns-dropdown-btn']}
+            className={styles["columns-dropdown-btn"]}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             Columns ▼
           </button>
           {isDropdownOpen && (
-            <div className={styles['columns-dropdown']}>
+            <div className={styles["columns-dropdown"]}>
               <label className="block mb-1">
                 <input
                   type="checkbox"
@@ -194,8 +207,8 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
       </div>
 
       {/* Table */}
-      <div className={styles['table-wrapper']}>
-        <table className={styles['table']}>
+      <div className={styles["table-wrapper"]}>
+        <table className={styles["table"]}>
           <thead>
             <tr>
               <th className="p-2 border-b border-gray-700">
@@ -238,10 +251,7 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
           </thead>
           <tbody>
             {filteredRows.map((row, index) => (
-              <tr
-                key={index}
-                className="hover:bg-gray-800"
-              >
+              <tr key={index} className="hover:bg-gray-800">
                 <td className="p-2 border-b border-gray-700">
                   {/* Individual Checkbox */}
                   <input
@@ -252,37 +262,65 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
                   />
                 </td>
                 {visibleColumns.project && (
-                  <td className="p-2 border-b border-gray-700">{row.project}</td>
+                  <td className="p-2 border-b border-gray-700">
+                    {row.project}
+                  </td>
                 )}
                 {visibleColumns.namaDomain && (
-                  <td className="p-2 border-b border-gray-700">{row.namaDomain}</td>
+                  <td className="p-2 border-b border-gray-700">
+                    {row.namaDomain}
+                  </td>
                 )}
                 {visibleColumns.domain && (
                   <td className="p-2 border-b border-gray-700">{row.domain}</td>
                 )}
                 {visibleColumns.sdhDeplo && (
                   <td className="p-2 border-b border-gray-700">
-                    {row.sdhDeplo == true?
-                    <button onClick={() => changeStatus(row.projectID, row.sdhDeplo)}>sudah</button>
-                    :  
-                    <button onClick={() => changeStatus(row.projectID, row.sdhDeplo)}>belum</button>
-                  }
+                    {row.sdhDeplo === true ? (
+                      <button
+                        onClick={() =>
+                          changeStatus(row.projectID, row.sdhDeplo)
+                        }
+                        className="status-button"
+                      >
+                        <span className="icon">&#10003;</span> {/* Centang */}
+                        Sudah
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() =>
+                          changeStatus(row.projectID, row.sdhDeplo)
+                        }
+                        className="status-buttonr"
+                      >
+                        <span className="icon">&#10007;</span> {/* Silang */}
+                        Belum
+                      </button>
+                    )}
                   </td>
                 )}
                 {visibleColumns.tagihan && (
-                  <td className="p-2 border-b border-gray-700">{row.tagihan}</td>
+                  <td className="p-2 border-b border-gray-700">
+                    {row.tagihan}
+                  </td>
                 )}
                 {visibleColumns.createdAt && (
-                  <td className="p-2 border-b border-gray-700">{(row.createdAt).toLocaleDateString()}</td>
+                  <td className="p-2 border-b border-gray-700">
+                    {row.createdAt.toLocaleDateString()}
+                  </td>
                 )}
                 {visibleColumns.tenggat && (
-                  <td className="p-2 border-b border-gray-700">{(row.tenggat).toLocaleDateString()}</td>
+                  <td className="p-2 border-b border-gray-700">
+                    {row.tenggat.toLocaleDateString()}
+                  </td>
                 )}
                 {visibleColumns.userID && (
                   <td className="p-2 border-b border-gray-700">{row.userID}</td>
                 )}
                 {visibleColumns.layananID && (
-                  <td className="p-2 border-b border-gray-700">{row.layananID}</td>
+                  <td className="p-2 border-b border-gray-700">
+                    {row.layananID}
+                  </td>
                 )}
                 <td className="p-2 border-b border-gray-700">...</td>
               </tr>
@@ -299,9 +337,10 @@ const Table: React.FC<TableProps> = ({ rows = [] }) => {
       </div>
 
       {/* Footer */}
-      <div className={styles['table-footer']}>
+      <div className={styles["table-footer"]}>
         <span>
-          {checkedRows.filter((isChecked) => isChecked).length} of {rows.length} row(s) selected.
+          {checkedRows.filter((isChecked) => isChecked).length} of {rows.length}{" "}
+          row(s) selected.
         </span>
       </div>
     </div>

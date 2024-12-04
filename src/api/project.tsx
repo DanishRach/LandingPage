@@ -46,6 +46,24 @@ export async function getProject() {
         throw err; // Re-throw the error for handling at a higher level
     }
 }
+export async function findProjectByUser(userID: string) {
+    try {
+        // Efficiently retrieve overdue projects and their associated services
+       
+        const data = await prisma.project.findMany({
+            where:{
+                userID: userID
+            }
+        })
+
+        await prisma.$disconnect();
+        return data;
+    } catch (err) {
+        console.error('Error fetching and updating projects:', err);
+        await prisma.$disconnect(); // Disconnect even on error
+        throw err; // Re-throw the error for handling at a higher level
+    }
+}
 
 
 

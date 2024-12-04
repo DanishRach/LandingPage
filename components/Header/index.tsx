@@ -173,6 +173,22 @@ const Index = () => {
                 <Magnetic>
                   <div className={styles.el}>
                     <Link
+                      style={{
+                        color: pathname === "/" ? "white" : "black",
+                        textDecoration: "none",
+                        cursor: "pointer",
+                        display: pathname === "" ? "none" : "inline",
+                      }}
+                      href="/page/status"
+                    >
+                      Status
+                    </Link>
+                    <div className={styles.indicator}></div>
+                  </div>
+                </Magnetic>
+                <Magnetic>
+                  <div className={styles.el}>
+                    <Link
                       onClick={async () => {
                         await deleteSession();
                       }}
