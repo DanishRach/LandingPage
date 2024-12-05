@@ -42,7 +42,9 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+RUN apk add --no-cache libcap
 RUN setcap 'cap_net_bind_service=+ep' $(which node)
+RUN which setcap || echo "setcap not found!"
 
 USER nextjs
 
