@@ -109,47 +109,47 @@ export async function regis(formdata: FormData) {
   }
 }
 
-export async function addUser(formdata: FormData) {
-  try {
-    const email = String(formdata.get('email'))
-    const password = String(formdata.get('password'))
-    const namaDepan = formdata.get('namaDepan')
-    const namaBelakang = formdata.get('namaBelakang')
-    const telp = formdata.get('telp')
-    const provinsi = formdata.get('provinsi')
-    const alamat = formdata.get('alamat')
-    const kodePos = formdata.get('kodePos')
+// export async function addUser(formdata: FormData) {
+//   try {
+//     const email = String(formdata.get('email'))
+//     const password = String(formdata.get('password'))
+//     const namaDepan = formdata.get('namaDepan')
+//     const namaBelakang = formdata.get('namaBelakang')
+//     const telp = formdata.get('telp')
+//     const provinsi = formdata.get('provinsi')
+//     const alamat = formdata.get('alamat')
+//     const kodePos = formdata.get('kodePos')
 
 
-    // Check if `services` is an array and contains valid items
+//     // Check if `services` is an array and contains valid items
 
-    await prisma.user.create({
-      data: {
-        email: email as string,
-        password: md5(password),
-        namaDepan: namaDepan as string || undefined,
-        namaBelakang: namaBelakang as string || undefined,
-        telp: telp as string || undefined,
-        provinsi: provinsi as string || undefined,
-        alamat: alamat as string || undefined,
-        kodePos: kodePos as string || undefined,
+//     await prisma.user.create({
+//       data: {
+//         email: email as string,
+//         password: md5(password),
+//         namaDepan: namaDepan as string || undefined,
+//         namaBelakang: namaBelakang as string || undefined,
+//         telp: telp as string || undefined,
+//         provinsi: provinsi as string || undefined,
+//         alamat: alamat as string || undefined,
+//         kodePos: kodePos as string || undefined,
 
-      }
-    })
-    await prisma.$disconnect()
-    revalidatePath('/')
-    return {
-      success: 'succes add user'
-    }
-  } catch (err) {
-    console.log('error in: ' + err)
-    await prisma.$disconnect()
-    return {
-      error: 'something wrong'
-    };
+//       }
+//     })
+//     await prisma.$disconnect()
+//     revalidatePath('/')
+//     return {
+//       success: 'succes add user'
+//     }
+//   } catch (err) {
+//     console.log('error in: ' + err)
+//     await prisma.$disconnect()
+//     return {
+//       error: 'something wrong'
+//     };
 
-  }
-}
+//   }
+// }
 
 export async function editUser(formdata: FormData) {
   try {

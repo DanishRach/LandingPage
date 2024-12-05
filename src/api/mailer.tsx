@@ -6,7 +6,7 @@ export async function mail(subject: string, username: string, email: string, lay
     try {
         await trasnporter.sendMail({
             from: "pertamham@gmail.com",
-            to: 'pertamayus@gmail.com',
+            to: 'nurhidayahayundira296@gmail.com',
             subject: subject,
             text: 'coba',
             html: `

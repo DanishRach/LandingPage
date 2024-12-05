@@ -15,6 +15,7 @@ export async function middleware(req: NextRequest) {
   if (req.nextUrl.pathname.startsWith(protectedRoutes) && !session?.data) {
     return NextResponse.redirect(new URL('/page/form', req.nextUrl))
   }
+  // Redirect to /login if the user is not admin
   if (req.nextUrl.pathname.startsWith(protectedRoutes) && (session?.data.role !== 'ADMIN')) {
     return NextResponse.redirect(new URL('/page/form', req.nextUrl))
   }
