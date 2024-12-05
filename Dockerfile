@@ -42,6 +42,8 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+RUN setcap 'cap_net_bind_service=+ep' $(which node)
+
 USER nextjs
 
 EXPOSE 80
