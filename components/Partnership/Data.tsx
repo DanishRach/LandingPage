@@ -11,8 +11,8 @@ export const companies = [
     },
     {
       id: 4,
-      name: "SMK 1 Negeri Surabaya",
-      img: "/sby.svg",
+      name: "SMKN 2 Surabaya",
+      img: "/smkn2.png",
     },
     {
       id: 5,

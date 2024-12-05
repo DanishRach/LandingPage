@@ -15,12 +15,21 @@ const Clients = () => {
             <React.Fragment key={company.id}>
               <div className={styles["company-logo"]}>
                 {/* Logo */}
+                {company.img == '/smkn2.png'?
                 <Image
+                src={company.img}
+                alt={company.name}
+                width={150}  // You can specify the width
+                height={150} // You can specify the height
+              />
+              :
+              <Image
                   src={company.img}
                   alt={company.name}
                   width={300}  // You can specify the width
                   height={300} // You can specify the height
                 />
+              }
               </div>
             </React.Fragment>
           ))}
@@ -30,4 +39,4 @@ const Clients = () => {
   );
 };
 
-export default Clients;
+export default Clients;
