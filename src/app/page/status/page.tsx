@@ -5,6 +5,7 @@ import { projectProps } from "../../../../types/types";
 import { getSession } from "@/lib/auth";
 import { findProjectByUser } from "@/api/project";
 import styles from "./style.module.scss"; // Impor file SCSS module
+import Link from "next/link";
 
 export default function Page() {
   const [status, setStatus] = useState<projectProps[]>();
@@ -29,11 +30,18 @@ export default function Page() {
           <p className={styles.field}>Nama Domain: {item.namaDomain}</p>
           <p className={styles.field}>Project: {item.project}</p>
           <div className={styles.status}>
-            {item.sdhDeplo === true ? (
-              <span className={styles.active}>Active</span>
-            ) : (
-              <span className={styles.nonActive}>Nonactive</span>
-            )}
+            {item.sdhDeplo === 'ONWAITING' ? (
+              <span className={''}>On Waiting</span>
+            ) : <></>}
+            {item.sdhDeplo === 'ONPROGRESS' ? (
+              <span className={''}>On Progress</span>
+            ) : <></>}
+            {item.sdhDeplo === 'FINISH' ? (
+              <div>
+                <span className={''}>Finish</span>
+                <Link href={item.linkDeploy!}>{item.linkDeploy}</Link>
+              </div>
+            ) : <></>}
           </div>
         </div>
       ))}

@@ -1,10 +1,9 @@
 'use server';
 
-import { Domain } from "@prisma/client";
+import { Domain, Status } from "@prisma/client";
 import prisma from "../lib/prisma";
 import { revalidatePath } from "next/cache";
-import { mail } from "./mailer";
-import { error } from "console";
+import { mailAdmin, mailChangeStatus, mailCustomer } from "./mailer";
 
 
 export async function getProject() {
@@ -110,15 +109,16 @@ export async function addProject(formData: FormData) {
         })
 
         await prisma.$disconnect()
-        const message = await mail('penambahan data',user?.namaDepan! ,  user?.email!,layanan?.judul!, JSON.stringify(namaDomain) , JSON.stringify(domain))
-        if (message.error){
+        const message = await mailAdmin('penambahan data', "pertamayus@gmail.com",user?.namaDepan! ,  user?.email!,layanan?.judul!, JSON.stringify(namaDomain) , JSON.stringify(domain))
+        const message2 = await mailCustomer('pembayaran telah diterima', user?.email!,layanan?.judul!, JSON.stringify(namaDomain) , JSON.stringify(domain))
+        if (message.error || message2.error){
             return{
                 error: message.error
             }
         }
         revalidatePath('/')
         return {
-            success: 'success add project'
+            success: 'success buy bundle'
         }
     } catch (err) {
         console.log('error in: ' + err)
@@ -188,6 +188,74 @@ export async function payProject(formData: FormData) {
     }
 }
 
+export async function changeStatus(projectID: string, userID: string, formdata: FormData) {
+    try{
+        const sdhDeplo = formdata.get('sdhDeplo')
+
+        const user = await prisma.user.findUnique({
+            where:{
+                userID: userID
+            }
+        })
+        
+        const project = await prisma.project.findUnique({
+            where:{
+                projectID: projectID
+            }
+        })
+
+        await prisma.project.update({
+            where: {projectID: projectID},
+            data:{
+                sdhDeplo: sdhDeplo as Status
+            }
+        })
+        const message = await mailChangeStatus('Perubahan Status', user?.email!, project?.namaDomain! ,sdhDeplo as string)
+
+        if (message.error) {
+            return {
+                error: message.error
+            }
+        }
+        revalidatePath('/','layout')
+        return {
+            success: 'succes edit status'
+        }
+    } catch(err) {
+        console.log("this is error: "+ err)
+        return {
+            error: 'something wrong'
+        }
+    } finally{
+        await prisma.$disconnect()
+    }
+}
+
+export async function handleDeploy(projectID: string, formdata: FormData) {
+    try{
+        const linkDeploy = formdata.get('linkDeploy')
+
+        await prisma.project.update({
+            where: {projectID: projectID},
+            data:{
+                linkDeploy: linkDeploy as string
+            }
+        })
+
+        revalidatePath('/','layout')
+        return {
+            success: 'succes edit link deploy'
+        }
+    } catch(err) {
+        console.log("this is error: "+ err)
+        return {
+            error: 'something wrong'
+        }
+    } finally{
+        await prisma.$disconnect()
+    }
+}
+
 export async function editProject(formData: FormData) {
     try {
         const projectID = String(formData.get('projectID'))
@@ -195,7 +263,6 @@ export async function editProject(formData: FormData) {
         const namaDomain = formData.get('namaDomain')
         const domain = formData.get('domain')
         const project = formData.get('project')
-        const sdhDeplo = Boolean(formData.get('sdhDeplo'))
         const layananID = formData.get('layananID')
 
         if (layananID) {
@@ -214,14 +281,12 @@ export async function editProject(formData: FormData) {
                     project: project as string || undefined,
                     namaDomain: namaDomain as string || undefined,
                     domain: domain as Domain || undefined,
-                    sdhDeplo: sdhDeplo,
                     userID: userID as string || undefined,
                     layananID: layananID as string,
                     tagihan: dataLayanan?.harga as number || undefined
                 }
             })
         } else {
-            console.log(sdhDeplo)
             await prisma.project.update({
                 where: {
                     projectID: projectID
@@ -230,7 +295,6 @@ export async function editProject(formData: FormData) {
                     project: project as string || undefined,
                     namaDomain: namaDomain as string || undefined,
                     domain: domain as Domain || undefined,
-                    sdhDeplo: sdhDeplo,
                     userID: userID as string || undefined,
                 }
             })

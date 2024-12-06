@@ -88,6 +88,10 @@ export async function regis(formdata: FormData) {
     const passwordStr = String(password);
 
     // Check if the user exists
+    const user = await prisma.user.findUnique({
+      where: { email: emailStr },
+    });
+    if(user) return {error: 'user already exits, please login'}
       // Hash the password and register the user
       const hashedPassword = await bcrypt.hash(passwordStr, saltRounds);
 

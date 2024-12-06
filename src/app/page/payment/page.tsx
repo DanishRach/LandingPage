@@ -187,7 +187,7 @@ const PaymentPageContent = () => {
               <input
                 value={telp || userLogin?.telp || ""}
                 onChange={(e) => setTelp(e.target.value)}
-                type="tel"
+                type="number"
                 placeholder="0812 3456 7890"
                 required
               />
@@ -279,7 +279,7 @@ const PaymentPageContent = () => {
               <input
                 value={kodePos || userLogin?.kodePos || ""}
                 onChange={(e) => setKodePos(e.target.value)}
-                type="text"
+                type="number"
                 placeholder="Kode Pos"
                 required
               />
