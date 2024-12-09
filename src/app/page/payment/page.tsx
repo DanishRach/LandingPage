@@ -12,20 +12,20 @@ import { addProject } from "@/api/project";
 import { toast } from "sonner";
 import Script from "next/script";
 
-declare global {
-  interface Window {
-    snap: {
-      pay: (transactionToken: string, options?: SnapPayOptions) => void;
-    };
-  }
-}
+// declare global {
+//   interface Window {
+//     snap: {
+//       pay: (transactionToken: string, options?: SnapPayOptions) => void;
+//     };
+//   }
+// }
 
-interface SnapPayOptions {
-  onSuccess?: (result: unknown) => void;
-  onPending?: (result: unknown) => void;
-  onError?: (result: unknown) => void;
-  onClose?: () => void;
-}
+// interface SnapPayOptions {
+//   onSuccess?: (result: unknown) => void;
+//   onPending?: (result: unknown) => void;
+//   onError?: (result: unknown) => void;
+//   onClose?: () => void;
+// }
 
 const PaymentPageContent = () => {
   const [userLogin, setUserLogin] = useState<userProps | undefined>(undefined);

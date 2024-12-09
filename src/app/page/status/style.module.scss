@@ -90,7 +90,63 @@
     transition: background-color 0.3s ease-in-out;
 
     &:hover {
-      background-color: #e3f2fd
-    }
+      background-color: #e3f2fd;
+    }
+  }
+}
+
+/* Styling for the 'bayar tagihan' button */
+.bayarButton {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #388e3c;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  margin-top: 12px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #2c6f29;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    background-color: #1b5e20;
+    transform: translateY(0);
+  }
+}
+
+.bayarButton:disabled {
+  background-color: #c8e6c9;
+  cursor: not-allowed;
+}
+
+/* Link deploy styling */
+.linkDeploy {
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #1976d2;
+  border-radius: 4px;
+  text-decoration: none;
+  margin-top: 10px;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #1565c0;
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    background-color: #0d47a1;
+    transform: translateY(0);
   }
 }
