@@ -184,7 +184,7 @@ export default function Ui({ layananData }: uiProps) {
           layananData.map((item) => (
             <div key={item.layananID} className={styles.card}>
               <h3>{item.judul}</h3>
-              <p>Price: Rp {item.harga.toLocaleString()}</p>
+              <p>Price: Rp {item.harga.toLocaleString('id-ID')}</p>
               <p>Services</p>
               <ul>
                 {item.services.map((service, index) => (

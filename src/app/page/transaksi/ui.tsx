@@ -6,7 +6,7 @@ import { layananProps } from "../../../../types/types";
 import { getLayanan } from "@/api/bundle";
 import { getSession } from "@/lib/auth";
 import { toast } from "sonner";
-import { mail } from "@/api/mailer";
+import { mailChangeFinish, mailChangeOnProgress, mailChangeOnWaiting } from "@/api/mailer";
 
 interface Plan {
   layananData: layananProps[] | undefined
@@ -103,7 +103,6 @@ export default function Ui () {
                   </li>
                 ))}
               </ul>
-
               <button
                 className={styles.button}
                 onClick={async () => {

@@ -325,7 +325,7 @@ const Table: React.FC<TableProps> = ({ rows = [], userData = [], layananData = [
                 )}
                 {visibleColumns.tagihan && (
                   <td className="p-2 border-b border-gray-700">
-                    Rp. {row.tagihan}
+                    Rp. {row.tagihan.toLocaleString('id-ID')}
                   </td>
                 )}
                 {visibleColumns.createdAt && (
