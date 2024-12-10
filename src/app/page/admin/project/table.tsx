@@ -2,23 +2,31 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "./page.module.scss"; // Import the SCSS file
-import { layananProps, projectProps, userProps } from "../../../../../types/types";
+import {
+  layananProps,
+  projectProps,
+  userProps,
+} from "../../../../../types/types";
 import { changeStatus, editProject, handleDeploy } from "@/api/project";
 import { toast } from "sonner";
-import moment from "moment"
+import moment from "moment";
 import { getUser } from "@/api/user";
 import { getLayanan } from "@/api/bundle";
 
 interface TableProps {
-  rows: projectProps[] | undefined;
+  rows: projectProps[] | undefined | { error: string };
   userData: userProps[] | undefined;
   layananData: layananProps[] | undefined;
 }
 
-const Table: React.FC<TableProps> = ({ rows = [], userData = [], layananData = [] }) => {
+const Table: React.FC<TableProps> = ({
+  rows = [],
+  userData = [],
+  layananData = [],
+}) => {
   const [filter, setFilter] = useState<string>("");
-  const [checkedRows, setCheckedRows] = useState<boolean[]>(
-    Array(rows.length).fill(false)
+  const [checkedRows, setCheckedRows] = useState<boolean[]>(() =>
+    Array.isArray(rows) ? Array(rows.length).fill(false) : []
   );
   const [isSelectAll, setIsSelectAll] = useState<boolean>(false);
   const [visibleColumns, setVisibleColumns] = useState({
@@ -38,18 +46,26 @@ const Table: React.FC<TableProps> = ({ rows = [], userData = [], layananData = [
 
   // Ensure checkedRows state is updated if rows change
   useEffect(() => {
-    setCheckedRows(Array(rows.length).fill(false));
+    if (Array.isArray(rows)) {
+      setCheckedRows(Array(rows.length).fill(false));
+    } else {
+      setCheckedRows([]); // or another fallback value as needed
+    }
   }, [rows]);
 
   // Filter rows based on email
-  const filteredRows = rows.filter((row) =>
-    row.project.toLowerCase().includes(filter.toLowerCase())
-  );
+  const filteredRows = Array.isArray(rows)
+    ? rows.filter((row) =>
+        row.project.toLowerCase().includes(filter.toLowerCase())
+      )
+    : [];
 
   // Handle Select All
   const handleSelectAll = (checked: boolean) => {
-    setIsSelectAll(checked);
-    setCheckedRows(Array(rows.length).fill(checked));
+    if (Array.isArray(rows)) {
+      setIsSelectAll(checked);
+      setCheckedRows(Array(rows.length).fill(checked));
+    }
   };
 
   // Handle individual row checkbox
@@ -84,22 +100,26 @@ const Table: React.FC<TableProps> = ({ rows = [], userData = [], layananData = [
     }));
   };
 
-  const handleChangeStatus = async (projectID: string, userID: string, sdhDeplo: string) => {
+  const handleChangeStatus = async (
+    projectID: string,
+    userID: string,
+    sdhDeplo: string
+  ) => {
     try {
       const formData = new FormData();
       if (sdhDeplo) formData.append("sdhDeplo", sdhDeplo);
-      if (sdhDeplo == 'FINISH') {
-        const linkDeploy = prompt('Please Enter the Deploy Link')
+      if (sdhDeplo == "FINISH") {
+        const linkDeploy = prompt("Please Enter the Deploy Link");
         if (linkDeploy) formData.append("linkDeploy", linkDeploy);
-        const addDeploy = await handleDeploy(projectID, formData)
+        const addDeploy = await handleDeploy(projectID, formData);
         if (addDeploy.error) {
-          toast.error(addDeploy.error)
+          toast.error(addDeploy.error);
         } else {
           const result = await changeStatus(projectID, userID, formData);
           if (result.error) {
-            toast.error(result.error)
+            toast.error(result.error);
           } else {
-            toast.success(result.success)
+            toast.success(result.success);
           }
         }
       } else {
@@ -118,19 +138,19 @@ const Table: React.FC<TableProps> = ({ rows = [], userData = [], layananData = [
 
   const userEmail = (userID: string) => {
     if (userID !== null && userData) {
-      const user = userData.find((item) => item.userID === userID)
+      const user = userData.find((item) => item.userID === userID);
 
-      return user?.email
+      return user?.email;
     }
-  }
+  };
 
   const layananName = (layananID: string) => {
     if (layananID !== null && layananData) {
-      const layanan = layananData.find((item) => item.layananID === layananID)
+      const layanan = layananData.find((item) => item.layananID === layananID);
 
-      return layanan?.judul
+      return layanan?.judul;
     }
-  }
+  };
 
   return (
     <div className={styles["table-container"]}>
@@ -311,7 +331,16 @@ const Table: React.FC<TableProps> = ({ rows = [], userData = [], layananData = [
                 )}
                 {visibleColumns.sdhDeplo && (
                   <td className="p-2 border-b border-gray-700">
-                    <select value={row.sdhDeplo} onChange={(e) => handleChangeStatus(row.projectID,row.userID,e.target.value)}>
+                    <select
+                      value={row.sdhDeplo}
+                      onChange={(e) =>
+                        handleChangeStatus(
+                          row.projectID,
+                          row.userID,
+                          e.target.value
+                        )
+                      }
+                    >
                       <option value="ONWAITING">On Waiting</option>
                       <option value="ONPROGRESS">On Progress</option>
                       <option value="FINISH">Finish</option>
@@ -325,21 +354,23 @@ const Table: React.FC<TableProps> = ({ rows = [], userData = [], layananData = [
                 )}
                 {visibleColumns.tagihan && (
                   <td className="p-2 border-b border-gray-700">
-                    Rp. {row.tagihan.toLocaleString('id-ID')}
+                    Rp. {row.tagihan.toLocaleString("id-ID")}
                   </td>
                 )}
                 {visibleColumns.createdAt && (
                   <td className="p-2 border-b border-gray-700">
-                    {moment(row.createdAt).format('DD/MM/YYYY')}
+                    {moment(row.createdAt).format("DD/MM/YYYY")}
                   </td>
                 )}
                 {visibleColumns.tenggat && (
                   <td className="p-2 border-b border-gray-700">
-                    {moment(row.tenggat).format('DD/MM/YYYY')}
+                    {moment(row.tenggat).format("DD/MM/YYYY")}
                   </td>
                 )}
                 {visibleColumns.userID && (
-                  <td className="p-2 border-b border-gray-700">{userEmail(row.userID)}</td>
+                  <td className="p-2 border-b border-gray-700">
+                    {userEmail(row.userID)}
+                  </td>
                 )}
                 {visibleColumns.layananID && (
                   <td className="p-2 border-b border-gray-700">
@@ -363,8 +394,10 @@ const Table: React.FC<TableProps> = ({ rows = [], userData = [], layananData = [
       {/* Footer */}
       <div className={styles["table-footer"]}>
         <span>
-          {checkedRows.filter((isChecked) => isChecked).length} of {rows.length}{" "}
-          row(s) selected.
+          {Array.isArray(rows)
+            ? checkedRows.filter((isChecked) => isChecked).length
+            : 0}{" "}
+          of {Array.isArray(rows) ? rows.length : 0} row(s) selected.
         </span>
       </div>
     </div>
