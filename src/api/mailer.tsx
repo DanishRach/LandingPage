@@ -38,12 +38,12 @@ export async function mailCustomer(nama: string, email: string, layanan: string,
                     Terima kasih atas pembayaran Anda untuk layanan cloud tier 
                     ${layanan} pada domain "${namaDomain}.${domain.toLocaleLowerCase()}". Pembayaran Anda telah kami terima.
 
-                    Anda kini telah resmi menjadi pelanggan [Nama Perusahaan Anda]. 
+                    Anda kini telah resmi menjadi pelanggan PT. Inovasi Utama Nusantara. 
                     Kami akan segera mengaktifkan layanan Anda.
 
                     Terima kasih,
 
-                    [Nama Perusahaan Anda]
+                    PT. Inovasi Utama Nusantara
                     `,
             html: `
                     <p>
@@ -56,7 +56,7 @@ export async function mailCustomer(nama: string, email: string, layanan: string,
                     </p>
                         <br></br>
                     <p>
-                    Anda kini telah resmi menjadi pelanggan [Nama Perusahaan Anda]. 
+                    Anda kini telah resmi menjadi pelanggan PT. Inovasi Utama Nusantara. 
                     Kami akan segera mengaktifkan layanan Anda.
                     </p>
                         <br></br>
@@ -65,7 +65,7 @@ export async function mailCustomer(nama: string, email: string, layanan: string,
                     </p>
                         <br></br>
                     <p>
-                    [Nama Perusahaan Anda]
+                    PT. Inovasi Utama Nusantara
                     </p>
                     `
         })
@@ -89,13 +89,13 @@ export async function notif5Hari(nama: string, email: string, namaDomain: string
             text: `Yth. ${nama}
 
                     Ini adalah pengingat bahwa tagihan jasa cloud Anda dengan nama domain ${namaDomain}.${domain.toLocaleLowerCase()} 
-                    akan jatuh tempo dalam 5 hari ke depan, yaitu pada tanggal ${tenggat.toLocaleDateString()}.
+                    akan jatuh tempo dalam 5 hari ke depan, yaitu pada tanggal ${new Date(tenggat).toLocaleDateString()}.
 
                     Untuk menghindari gangguan pada layanan Anda, mohon segera melakukan pembayaran.
 
                     Terima kasih atas perhatiannya.
 
-                    [Nama Perusahaan Anda]
+                    PT. Inovasi Utama Nusantara
                     `,
             html: `
                     <p>
@@ -104,7 +104,7 @@ export async function notif5Hari(nama: string, email: string, namaDomain: string
                         <br></br>
                     <p>
                     Ini adalah pengingat bahwa tagihan jasa cloud Anda dengan nama domain ${namaDomain}.${domain.toLocaleLowerCase()} 
-                    akan jatuh tempo dalam 5 hari ke depan, yaitu pada tanggal ${tenggat}.
+                    akan jatuh tempo dalam 5 hari ke depan, yaitu pada tanggal ${new Date(tenggat).toLocaleDateString()}.
                     </p>
                         <br></br>
                     <p>
@@ -116,7 +116,7 @@ export async function notif5Hari(nama: string, email: string, namaDomain: string
                     </p>
                         <br></br>
                     <p>
-                    [Nama Perusahaan Anda]
+                    PT. Inovasi Utama Nusantara
                     </p>
                     `
         })
@@ -141,13 +141,13 @@ export async function notifTenggat(nama: string, email: string, namaDomain: stri
             text: `Yth. ${nama}
 
                     Kami ingin mengingatkan Anda bahwa tagihan untuk layanan cloud Anda dengan  nama domain ${namaDomain}.${domain.toLocaleLowerCase()}
-                    akan jatuh tempo hari ini, ${tenggat.toLocaleDateString()}. Total tagihan yang harus dibayarkan adalah Rp.${total.toLocaleString('id-ID')}.
+                    akan jatuh tempo hari ini, ${new Date(tenggat).toLocaleDateString()}. Total tagihan yang harus dibayarkan adalah Rp.${total.toLocaleString('id-ID')}.
 
                     Untuk menghindari gangguan pada layanan Anda, mohon segera melakukan pembayaran 
 
                     Terima kasih atas perhatiannya.
 
-                    [Nama Perusahaan Anda]
+                    PT. Inovasi Utama Nusantara
                     `,
             html: `
                     <p>
@@ -156,7 +156,7 @@ export async function notifTenggat(nama: string, email: string, namaDomain: stri
                         <br></br>
                     <p>
                     Kami ingin mengingatkan Anda bahwa tagihan untuk layanan cloud Anda dengan  nama domain ${namaDomain}.${domain.toLocaleLowerCase()}
-                    akan jatuh tempo hari ini, ${tenggat}. Total tagihan yang harus dibayarkan adalah Rp.${total.toLocaleString('id-ID')}.
+                    akan jatuh tempo hari ini, ${new Date(tenggat).toLocaleDateString()}. Total tagihan yang harus dibayarkan adalah Rp.${total.toLocaleString('id-ID')}.
                     </p>
                         <br></br>
                     <p>
@@ -168,7 +168,7 @@ export async function notifTenggat(nama: string, email: string, namaDomain: stri
                     </p>
                         <br></br>
                     <p>
-                    [Nama Perusahaan Anda]
+                    PT. Inovasi Utama Nusantara
                     </p>
                     `
         })
@@ -196,11 +196,11 @@ export async function mailCustomerPay(nama: string, email: string, layanan: stri
 
                     Hormat kami,
 
-                    [Nama Perusahaan Anda]
+                    PT. Inovasi Utama Nusantara
                     `,
             html: `
                     <p>
-                    Yth. [Nama Pelanggan],
+                    Yth. ${nama},
                     </p>
                         <br></br>
                     <p>
@@ -213,7 +213,7 @@ export async function mailCustomerPay(nama: string, email: string, layanan: stri
                     </p>
                         <br></br>
                     <p>
-                    [Nama Perusahaan Anda]
+                    PT. Inovasi Utama Nusantara
                     </p>
                     `
         })
@@ -242,7 +242,7 @@ export async function mailChangeOnWaiting(nama: string, email: string, namaDomai
                     Terima kasih atas pengertiannya.
 
                     Salam hangat,
-                    Tim [Nama Perusahaan]`,
+                      PT. Inovasi Utama Nusantara`,
             html: `
                     <p>
                     Hai ${nama},
@@ -262,7 +262,7 @@ export async function mailChangeOnWaiting(nama: string, email: string, namaDomai
                     </p>
                     <br></br>
                     <p>
-                    Tim [Nama Perusahaan]
+                      PT. Inovasi Utama Nusantara
                     </p>
                     `
         })
@@ -289,7 +289,7 @@ export async function mailChangeOnProgress(nama: string, email: string, namaDoma
                     Kamu akan segera menerima kabar terbaru mengenai pengiriman.
 
                     Terima kasih,
-                    Tim [Nama Perusahaan]`,
+                      PT. Inovasi Utama Nusantara`,
             html: `
                     <p>
                     Hai ${nama},
@@ -305,7 +305,7 @@ export async function mailChangeOnProgress(nama: string, email: string, namaDoma
                     </p>
                     <br></br>
                     <p>
-                    Tim [Nama Perusahaan]
+                      PT. Inovasi Utama Nusantara
                     </p>
                     `
         })
@@ -333,7 +333,7 @@ export async function mailChangeFinish(nama: string, email: string, namaDomain: 
                    website anda di ${linkDeploy} 
 
                     Terima kasih atas kepercayaan Anda,
-                    Tim [Nama Perusahaan]`,
+                      PT. Inovasi Utama Nusantara`,
             html: `
                     <p>
                     Hai ${nama},
@@ -350,7 +350,7 @@ export async function mailChangeFinish(nama: string, email: string, namaDomain: 
                     </p>
                     <br></br>
                     <p>
-                    Tim [Nama Perusahaan]
+                      PT. Inovasi Utama Nusantara
                     </p>
                     `
         })

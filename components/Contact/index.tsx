@@ -13,7 +13,7 @@ const ContactSection: React.FC = () => {
   const { scrollYProgress } = useScroll({
     target: container,
     // @ts-ignore
-    offset: ['start end', 'end start'],
+    offset: ["start end", "end start"],
   });
 
   const x = useTransform(scrollYProgress, [0, 1], [0, 100]);
@@ -26,7 +26,12 @@ const ContactSection: React.FC = () => {
         <div className={styles.title}>
           <span>
             <div className={styles.imageContainer}>
-              <Image width={100} height={100} alt="image" src={`/images/p1.avif`} />
+              <Image
+                width={100}
+                height={100}
+                alt="image"
+                src={`/images/p1.avif`}
+              />
             </div>
             <h2>Let&apos;s work</h2>
           </span>
@@ -52,18 +57,25 @@ const ContactSection: React.FC = () => {
         </div>
         <div className={styles.nav}>
           <Rounded>
-            <p>muse@academy.id</p>
+            <a className={styles.sosial} href="mailto:muse@academy.id">
+              <p>muse@academy.id</p>
+            </a>
           </Rounded>
           <Rounded>
-            <p>+62 1817 8821 3412</p>
+            <a
+              className={styles.sosial}
+              href="https://wa.me/6281217318899"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <p>+62 1817 8821 3412</p>
+            </a>
           </Rounded>
         </div>
         <div className={styles.info}>
           <div>
-            <span>
-            </span>
-            <span>
-            </span>
+            <span></span>
+            <span></span>
           </div>
         </div>
       </div>
