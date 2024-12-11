@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client"
+import { Role, Status } from "@prisma/client"
 
 export interface userProps {
     userID: string
@@ -19,7 +19,8 @@ export interface projectProps {
     namaDomain: string
     domain: string
     project: string
-    sdhDeplo: boolean
+    sdhDeplo: Status,
+    linkDeploy?: string | null,
     tagihan: number
     createdAt: Date
     tenggat: Date

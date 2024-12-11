@@ -12,20 +12,20 @@ import { addProject } from "@/api/project";
 import { toast } from "sonner";
 import Script from "next/script";
 
-declare global {
-  interface Window {
-    snap: {
-      pay: (transactionToken: string, options?: SnapPayOptions) => void;
-    };
-  }
-}
+// declare global {
+//   interface Window {
+//     snap: {
+//       pay: (transactionToken: string, options?: SnapPayOptions) => void;
+//     };
+//   }
+// }
 
-interface SnapPayOptions {
-  onSuccess?: (result: unknown) => void;
-  onPending?: (result: unknown) => void;
-  onError?: (result: unknown) => void;
-  onClose?: () => void;
-}
+// interface SnapPayOptions {
+//   onSuccess?: (result: unknown) => void;
+//   onPending?: (result: unknown) => void;
+//   onError?: (result: unknown) => void;
+//   onClose?: () => void;
+// }
 
 const PaymentPageContent = () => {
   const [userLogin, setUserLogin] = useState<userProps | undefined>(undefined);
@@ -187,7 +187,7 @@ const PaymentPageContent = () => {
               <input
                 value={telp || userLogin?.telp || ""}
                 onChange={(e) => setTelp(e.target.value)}
-                type="tel"
+                type="number"
                 placeholder="0812 3456 7890"
                 required
               />
@@ -279,7 +279,7 @@ const PaymentPageContent = () => {
               <input
                 value={kodePos || userLogin?.kodePos || ""}
                 onChange={(e) => setKodePos(e.target.value)}
-                type="text"
+                type="number"
                 placeholder="Kode Pos"
                 required
               />

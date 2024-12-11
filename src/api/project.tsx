@@ -1,41 +1,65 @@
 'use server';
 
-import { Domain } from "@prisma/client";
+import { Domain, Status } from "@prisma/client";
 import prisma from "../lib/prisma";
 import { revalidatePath } from "next/cache";
-import { mail } from "./mailer";
-import { error } from "console";
+import { mailAdmin, mailChangeFinish, mailChangeOnProgress, mailChangeOnWaiting, mailCustomer, mailCustomerPay, notif5Hari, notifTenggat } from "./mailer";
 
 
 export async function getProject() {
     try {
-        // Efficiently retrieve overdue projects and their associated services
-        const overdueProjects = await prisma.project.findMany({
-            where: {
-                tenggat: { lte: new Date().toISOString() },
-            },
-            include: {
-                layanan: true,
-            },
-        });
 
-        for (const project of overdueProjects) {
-            const harga = await prisma.layanan.findUnique({
+        const today = new Date(Date.now())
+
+        const projectData = await prisma.project.findMany()
+
+         for (const data of projectData) {
+            const userData = await prisma.user.findUnique({
                 where: {
-                    layananID: project.layananID
+                    userID: data.userID
                 }
             })
-            const newTagihan = project.tagihan + (harga?.harga || 0);
 
-            await prisma.project.update({
-                where: {
-                    projectID: project.projectID,
-                },
-                data: {
-                    tagihan: newTagihan,
-                },
-            });
-        }
+            //menambahkan tagihan bila tanggal 1
+            if(today.getDate() == 1) {
+                    const harga = await prisma.layanan.findUnique({
+                        where: {
+                            layananID: data.layananID
+                        }
+                    })
+                    const newTagihan = data.tagihan + (harga?.harga || 0);
+        
+                    await prisma.project.update({
+                        where: {
+                            projectID: data.projectID,
+                        },
+                        data: {
+                            tagihan: newTagihan,
+                        },
+                    });
+            }
+
+            //memberikan notif tenggat 5 hari atau peringatan teggat berdasarkan data tenggat project
+            const tenggat = data.tenggat;
+            tenggat.setDate(tenggat.getDate() - 5);
+
+            if (data.tenggat <= tenggat) {
+                const mail = await notif5Hari(userData?.namaDepan!, userData?.email!, data.namaDomain!, data.domain!, data.tenggat!)
+                if (mail.error) {
+                    return {
+                        error: mail.error
+                    }
+                }
+            }
+            if (data.tenggat  == today) {
+                const mail = await notifTenggat(userData?.namaDepan!, userData?.email!, data.namaDomain!, data.domain!, data.tenggat!, data.tagihan!)
+                if (mail.error) {
+                    return {
+                        error: mail.error
+                    }
+                }
+            }
+         }
         const data = await prisma.project.findMany()
 
         await prisma.$disconnect();
@@ -110,15 +134,16 @@ export async function addProject(formData: FormData) {
         })
 
         await prisma.$disconnect()
-        const message = await mail('penambahan data',user?.namaDepan! ,  user?.email!,layanan?.judul!, JSON.stringify(namaDomain) , JSON.stringify(domain))
-        if (message.error){
+        const message = await mailAdmin('penambahan data', "pertamayus@gmail.com",user?.namaDepan! ,  user?.email!,layanan?.judul!, JSON.stringify(namaDomain) , JSON.stringify(domain))
+        const message2 = await mailCustomer(user?.namaDepan!,user?.email!,layanan?.judul!,namaDomain as string, domain as Domain)
+        if (message.error || message2.error){
             return{
                 error: message.error
             }
         }
         revalidatePath('/')
         return {
-            success: 'success add project'
+            success: 'success buy bundle'
         }
     } catch (err) {
         console.log('error in: ' + err)
@@ -132,7 +157,6 @@ export async function addProject(formData: FormData) {
 export async function payProject(formData: FormData) {
     try {
         const projectID = String(formData.get('projectID'))
-        const layananID = String(formData.get('layananID'))
 
 
         const dataProject = await prisma.project.findUnique({
@@ -141,9 +165,15 @@ export async function payProject(formData: FormData) {
             }
         })
         
+        const dataUser = await prisma.user.findUnique({
+            where: {
+                userID: dataProject?.userID
+            }
+        })
+        
         const dataLayanan = await prisma.layanan.findUnique({
             where: {
-                layananID: layananID
+                layananID: dataProject?.layananID
             }
         })
 
@@ -158,7 +188,7 @@ export async function payProject(formData: FormData) {
         }
 
         if(tagihanSisa < 0){
-            console.log('kesalahan pengurangna tagihan di payProject => project.tsx')
+            console.log('kesalahan pengurangna tagihan di api => project.tsx')
             return{
                 error: 'something wrong'
             }
@@ -174,8 +204,15 @@ export async function payProject(formData: FormData) {
             }
         })
 
+        const mail = await mailCustomerPay(dataUser?.namaDepan!, dataUser?.email!, dataLayanan?.judul!, dataProject?.namaDomain!, dataProject?.domain!)
+        if (mail.error) {
+            return {
+                error: mail.error
+            }
+        }
+
         await prisma.$disconnect()
-        revalidatePath('/')
+        revalidatePath('/', 'layout')
         return {
             success: 'success pay project'
         }
@@ -188,6 +225,90 @@ export async function payProject(formData: FormData) {
     }
 }
 
+export async function changeStatus(projectID: string, userID: string, formdata: FormData) {
+    try{
+        const sdhDeplo = formdata.get('sdhDeplo')
+
+        const project = await prisma.project.findUnique({
+            where:{
+                projectID: projectID
+            }
+        })
+
+        const user = await prisma.user.findUnique({
+            where:{
+                userID: project?.userID
+            }
+        })
+        
+
+        await prisma.project.update({
+            where: {projectID: projectID},
+            data:{
+                sdhDeplo: sdhDeplo as Status
+            }
+        })
+        if (sdhDeplo as Status  === 'ONWAITING') {
+            const mail = await mailChangeOnWaiting(user?.namaDepan!, user?.email!, project?.namaDomain!, project?.domain!)
+            if(mail.error) {
+                return {
+                    error: mail.error
+                }
+            }
+        } else if (sdhDeplo as Status  === 'ONPROGRESS') {
+            const mail = await mailChangeOnProgress(user?.namaDepan!, user?.email!, project?.namaDomain!, project?.domain!)
+            if(mail.error) {
+                return {
+                    error: mail.error
+                }
+            }
+        } else if (sdhDeplo as Status  === 'FINISH') {
+            const mail = await mailChangeFinish(user?.namaDepan!, user?.email!, project?.namaDomain!, project?.domain!, project?.linkDeploy!)
+            if(mail.error) {
+                return {
+                    error: mail.error
+                }
+            }
+        }
+        revalidatePath('/','layout')
+        return {
+            success: 'succes edit status'
+        }
+    } catch(err) {
+        console.log("this is error: "+ err)
+        return {
+            error: 'something wrong'
+        }
+    } finally{
+        await prisma.$disconnect()
+    }
+}
+
+export async function handleDeploy(projectID: string, formdata: FormData) {
+    try{
+        const linkDeploy = formdata.get('linkDeploy')
+
+        await prisma.project.update({
+            where: {projectID: projectID},
+            data:{
+                linkDeploy: linkDeploy as string
+            }
+        })
+
+        revalidatePath('/','layout')
+        return {
+            success: 'succes edit link deploy'
+        }
+    } catch(err) {
+        console.log("this is error: "+ err)
+        return {
+            error: 'something wrong'
+        }
+    } finally{
+        await prisma.$disconnect()
+    }
+}
+
 export async function editProject(formData: FormData) {
     try {
         const projectID = String(formData.get('projectID'))
@@ -195,7 +316,6 @@ export async function editProject(formData: FormData) {
         const namaDomain = formData.get('namaDomain')
         const domain = formData.get('domain')
         const project = formData.get('project')
-        const sdhDeplo = Boolean(formData.get('sdhDeplo'))
         const layananID = formData.get('layananID')
 
         if (layananID) {
@@ -214,14 +334,12 @@ export async function editProject(formData: FormData) {
                     project: project as string || undefined,
                     namaDomain: namaDomain as string || undefined,
                     domain: domain as Domain || undefined,
-                    sdhDeplo: sdhDeplo,
                     userID: userID as string || undefined,
                     layananID: layananID as string,
                     tagihan: dataLayanan?.harga as number || undefined
                 }
             })
         } else {
-            console.log(sdhDeplo)
             await prisma.project.update({
                 where: {
                     projectID: projectID
@@ -230,7 +348,6 @@ export async function editProject(formData: FormData) {
                     project: project as string || undefined,
                     namaDomain: namaDomain as string || undefined,
                     domain: domain as Domain || undefined,
-                    sdhDeplo: sdhDeplo,
                     userID: userID as string || undefined,
                 }
             })
