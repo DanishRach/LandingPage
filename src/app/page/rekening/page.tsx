@@ -1,34 +1,38 @@
 'use client';
+
 import { useState } from "react";
-import { PageProps } from "../../../../.next/types/app/page/rekening/page";
 
-
-interface rekeingProps {
-    data: any;
-    onClose: () => void;
+// Define the interface for the page props
+interface RekeningPageProps {
+  searchParams?: { showPaymentInfo?: boolean; onClose: () => void };  // onClose is required in searchParams
 }
 
-// Ignore automatic inference and enforce your custom props
-export default function RekeningPage({ data, onClose }: rekeingProps) {
-    const [showPaymentInfo, setShowPaymentInfo] = useState(data);
+export default function RekeningPage({ searchParams }: RekeningPageProps) {
+  // Internal state to track if payment info is shown
+  const [showPaymentInfo, setShowPaymentInfo] = useState(
+    searchParams?.showPaymentInfo ?? true
+  );
 
-    const handleClose = () => {
-        setShowPaymentInfo(false);
-        onClose();
-    };
+  // Handle the closing logic
+  const handleClose = () => {
+    setShowPaymentInfo(false);  // Hide payment info
+    if (searchParams?.onClose) {
+      searchParams.onClose();  // Call onClose passed from the parent
+    }
+  };
 
-    return (
-        <>
-            {showPaymentInfo && (
-                <div className="absolute top-auto">
-                    <div className="bg-yellow max-w-fit">
-                        <p>nomor rekening</p>
-                        <p>6000046010 -- INOVASI UTAMA NUSANTARA</p>
-                        <p>Bank BNI</p>
-                        <button onClick={handleClose}>close</button>
-                    </div>
-                </div>
-            )}
-        </>
-    );
+  return (
+    <>
+      {showPaymentInfo && (
+        <div className="absolute top-auto">
+          <div className="bg-yellow max-w-fit">
+            <p>nomor rekening</p>
+            <p>6000046010 -- INOVASI UTAMA NUSANTARA</p>
+            <p>Bank BNI</p>
+            <button onClick={handleClose}>close</button>
+          </div>
+        </div>
+      )}
+    </>
+  );
 }

@@ -116,6 +116,10 @@ const PaymentPageContent = () => {
     }
   };
 
+  const closeRekening =() => {
+    setShowRekeningPage(false)
+  }
+
   return (
     <>
       <Script
@@ -123,7 +127,7 @@ const PaymentPageContent = () => {
         data-client-key={process.env.NEXT_PUBLIC_CLIENT}
         strategy="lazyOnload"
       />
-      {showRekeningPage && <RekeningPage data={true} onClose={() => setShowRekeningPage(false)} />}
+      {showRekeningPage && <RekeningPage searchParams={{ showPaymentInfo: true, onClose :closeRekening  }}/>}
       <div className={styles["payment-container"]}>
         {/* Left Section */}
         <div className={styles["left-section"]}>

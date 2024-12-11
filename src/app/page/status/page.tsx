@@ -10,6 +10,7 @@ import { transaction } from "@/api/transaction";
 import { toast } from "sonner";
 import RekeningPage from "../rekening/page";
 
+
 declare global {
   interface Window {
     snap: {
@@ -45,9 +46,18 @@ const Page = () => {
     fetch();
   }, []);
 
+  const closeRekening =() => {
+    setShowRekeningPage(false)
+  }
+
   return (
     <>
-    {showRekeningPage && <RekeningPage data={true} onClose={() => setShowRekeningPage(false)} />}
+    {showRekeningPage && (
+        <RekeningPage
+          searchParams={{ showPaymentInfo: true, onClose :closeRekening  }} // Pass initial state if needed
+          // Pass the onClose handler to RekeningPage
+        />
+      )}
     <div className={styles.container}>
       {status?.map((item, index) => (
         <div key={index} className={styles.card}>
