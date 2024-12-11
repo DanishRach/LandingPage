@@ -32,5 +32,6 @@ export interface layananProps {
     layananID: string
     judul: string
     harga: number
+    potongan?: number | null
     services: string[]
 }

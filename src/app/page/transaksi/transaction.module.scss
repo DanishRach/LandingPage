@@ -67,7 +67,7 @@
 
 .price {
   margin-top: 2rem; /* Increased margin */
-  font-size: 3rem; /* Larger font size for prices */
+  font-size: 2.5rem; /* Larger font size for prices */
   font-weight: 700;
   color: #4f46e5;
 }
@@ -82,6 +82,10 @@
   font-size: 1rem; /* Increased size for strike-through text */
   text-decoration: line-through;
   margin-top: 0.5rem; /* Increased top margin */
+}
+
+.diskon{
+  text-decoration-line: line-through;
 }
 
 .button {

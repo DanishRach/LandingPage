@@ -49,6 +49,7 @@ model Project {
 model Layanan {
   layananID String   @id @default(auto()) @map("_id") @db.ObjectId
   judul     String
+  potongan Int? 
   harga     Int
   services  String[]
 
