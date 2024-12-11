@@ -284,6 +284,7 @@ const PaymentPageContent = () => {
                 required
               />
             </div>
+            <p>Dengan membeli layanan berikut maka anda menyetujui <a target="_blank" href="/term&condition.pdf">syarat dan ketentuan yang berlaku</a></p>
             <button type="submit" className={styles["payment-button"]}>
               Bayar Sekarang
             </button>
