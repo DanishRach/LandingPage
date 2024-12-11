@@ -48,9 +48,9 @@ RUN which setcap || echo "setcap not found!"
 
 USER nextjs
 
-EXPOSE 80
+EXPOSE 443
 
-ENV PORT=80
+ENV PORT=443
 
 ENV HOSTNAME="0.0.0.0"
 CMD ["node", "server.js"]
