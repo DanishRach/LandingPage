@@ -134,7 +134,7 @@ export async function addProject(formData: FormData) {
         })
 
         await prisma.$disconnect()
-        const message = await mailAdmin('penambahan data', "pertamayus@gmail.com",user?.namaDepan! ,  user?.email!,layanan?.judul!, JSON.stringify(namaDomain) , JSON.stringify(domain))
+        const message = await mailAdmin('penambahan data', "nurhidayahayundira296@gmail.com",user?.namaDepan! ,  user?.email!,layanan?.judul!, JSON.stringify(namaDomain) , JSON.stringify(domain))
         const message2 = await mailCustomer(user?.namaDepan!,user?.email!,layanan?.judul!,namaDomain as string, domain as Domain)
         if (message.error || message2.error){
             return{
