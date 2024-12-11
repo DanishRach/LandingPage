@@ -16,6 +16,7 @@ export default function Ui({ layananData }: uiProps) {
     layananID: "",
     judul: "",
     harga: 0,
+    potongan: 0,
     services: [],
   });
   const [addServices, setAddServices] = useState<string>("");
@@ -56,6 +57,7 @@ export default function Ui({ layananData }: uiProps) {
       if (formData.layananID) form.append("layananID", formData.layananID);
       if (formData.judul) form.append("judul", formData.judul);
       if (formData.harga) form.append("harga", String(formData.harga));
+      if (formData.potongan) form.append("potongan", String(formData.potongan));
       if (formData.services && formData.services.length > 0) {
         formData.services.forEach((service) => {
           form.append("services", service); // Append each service as a separate entry
@@ -76,7 +78,13 @@ export default function Ui({ layananData }: uiProps) {
           toast.success(result.success);
         }
       }
-      setFormData({ layananID: "", judul: "", harga: 0, services: [] });
+      setFormData({
+        layananID: "",
+        judul: "",
+        harga: 0,
+        potongan: 0,
+        services: [],
+      });
       setIsEditing(false);
     } catch (err) {
       console.log(err);
@@ -136,6 +144,15 @@ export default function Ui({ layananData }: uiProps) {
             className={styles.input}
             required
           />
+          <input
+            type="number"
+            name="potongan"
+            value={formData.potongan || 0}
+            onChange={handleChange}
+            placeholder="Enter Discount"
+            className={styles.input}
+            required
+          />
           <div>
             <p className="mb-2 font-medium">Services</p>
             <ul>
@@ -184,7 +201,12 @@ export default function Ui({ layananData }: uiProps) {
           layananData.map((item) => (
             <div key={item.layananID} className={styles.card}>
               <h3>{item.judul}</h3>
-              <p>Price: Rp {item.harga.toLocaleString('id-ID')}</p>
+              <p>Price: Rp {item.harga.toLocaleString("id-ID")}</p>
+              {item.potongan !== undefined && item.potongan !== null ? (
+                <p>Discount: Rp {item.potongan.toLocaleString("id-ID")}</p>
+              ) : (
+                <></>
+              )}
               <p>Services</p>
               <ul>
                 {item.services.map((service, index) => (
