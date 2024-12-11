@@ -1,7 +1,7 @@
 FROM node:22-alpine AS base
 
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat vips-dev fftw-dev build-base
 WORKDIR /app
 
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
@@ -12,11 +12,12 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+RUN npm install sharp
 
 RUN npx prisma db push
 
@@ -26,8 +27,6 @@ RUN \
   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
   else echo "Lockfile not found." && exit 1; \
   fi
-
-
 
 FROM base AS runner
 WORKDIR /app
@@ -49,8 +48,7 @@ RUN which setcap || echo "setcap not found!"
 USER nextjs
 
 EXPOSE 80
-
 ENV PORT=80
-
 ENV HOSTNAME="0.0.0.0"
+
 CMD ["node", "server.js"]
