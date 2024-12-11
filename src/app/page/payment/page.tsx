@@ -11,6 +11,7 @@ import { transaction } from "@/api/transaction";
 import { addProject } from "@/api/project";
 import { toast } from "sonner";
 import Script from "next/script";
+import RekeningPage from "../rekening/page";
 
 // declare global {
 //   interface Window {
@@ -41,6 +42,8 @@ const PaymentPageContent = () => {
   const [kota, setKota] = useState<string>("");
   const [alamat, setAlamat] = useState<string>("");
   const [kodePos, setKodePos] = useState<string>("");
+
+  const [showRekeningPage, setShowRekeningPage] = useState(false);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -100,30 +103,16 @@ const PaymentPageContent = () => {
 
     try {
       await editUser(formData);
-      const pay = await transaction(formData);
-
-      if (typeof pay === "string") {
-        window.snap.pay(pay, {
-          onSuccess: async () => {
-            const data = await addProject(formData);
-            router.push("/");
-            if (data.error) {
-              toast.error(data.error);
-            } else {
-              toast.success(data.success);
-            }
-          },
-          onPending: () => console.log("Payment pending"),
-          onError: () => toast.error("Something went wrong"),
-          onClose: () =>
-            toast.info(
-              "Customer closed the popup without finishing the payment"
-            ),
-        });
+      const pesan = await addProject(formData);
+      if (pesan.error) {
+        toast.error(pesan.error)
+      } else {
+        toast.success(pesan.success)
       }
+      setShowRekeningPage(true)
     } catch (error) {
       console.error("Payment error:", error);
-      toast.error("An error occurred during payment processing");
+      toast.error("error terjadi dalam proses pemesanan");
     }
   };
 
@@ -134,6 +123,7 @@ const PaymentPageContent = () => {
         data-client-key={process.env.NEXT_PUBLIC_CLIENT}
         strategy="lazyOnload"
       />
+      {showRekeningPage && <RekeningPage data={true} onClose={() => setShowRekeningPage(false)} />}
       <div className={styles["payment-container"]}>
         {/* Left Section */}
         <div className={styles["left-section"]}>

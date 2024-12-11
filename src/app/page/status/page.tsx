@@ -8,6 +8,7 @@ import styles from "./style.module.scss"; // Impor file SCSS module
 import Link from "next/link";
 import { transaction } from "@/api/transaction";
 import { toast } from "sonner";
+import RekeningPage from "../rekening/page";
 
 declare global {
   interface Window {
@@ -26,31 +27,10 @@ interface SnapPayOptions {
 
 const Page = () => {
   const [status, setStatus] = useState<projectProps[]>();
+  const [showRekeningPage, setShowRekeningPage] = useState(false);
 
-  async function bayar(projectID: string, userID: string, layananID: string) {
-    const formData = new FormData();
-    if (projectID) formData.append("projectID", projectID);
-    if (userID) formData.append("userID", userID);
-    if (layananID) formData.append("layananID", layananID);
-
-    const pay = await transaction(formData);
-
-    if (typeof pay === "string") {
-      window.snap.pay(pay, {
-        onSuccess: async () => {
-          const data = await payProject(formData);
-          if (data.error) {
-            toast.error(data.error);
-          } else {
-            toast.success(data.success);
-          }
-        },
-        onPending: () => console.log("Payment pending"),
-        onError: () => toast.error("Something went wrong"),
-        onClose: () =>
-          toast.info("Customer closed the popup without finishing the payment"),
-      });
-    }
+  async function bayar() {
+    setShowRekeningPage(true)
   }
 
   useEffect(() => {
@@ -66,12 +46,27 @@ const Page = () => {
   }, []);
 
   return (
+    <>
+    {showRekeningPage && <RekeningPage data={true} onClose={() => setShowRekeningPage(false)} />}
     <div className={styles.container}>
       {status?.map((item, index) => (
         <div key={index} className={styles.card}>
           <p className={styles.title}>Data Project {index + 1}</p>
           <p className={styles.field}>Nama Domain: {item.namaDomain}</p>
           <p className={styles.field}>Project: {item.project}</p>
+          {item.tagihan > 0 ? (
+                  <>
+                  <p>Rp. {item.tagihan.toLocaleString("id-ID")}</p>
+                  <button
+                    className={styles.bayarButton}
+                    onClick={bayar}
+                  >
+                    bayar tagihan
+                  </button>
+                  </>
+                ) : (
+                  <></>
+                )}
           <div className={styles.status}>
             {item.sdhDeplo === "ONWAITING" ? (
               <span className={styles.nonActive}>On Waiting</span>
@@ -89,18 +84,6 @@ const Page = () => {
                 <Link href={item.linkDeploy!} className={styles.linkDeploy}>
                   {item.linkDeploy}
                 </Link>
-                {item.tagihan > 0 ? (
-                  <button
-                    className={styles.bayarButton}
-                    onClick={() =>
-                      bayar(item.projectID, item.userID, item.layananID)
-                    }
-                  >
-                    bayar tagihan
-                  </button>
-                ) : (
-                  <></>
-                )}
               </div>
             ) : (
               <></>
@@ -109,6 +92,7 @@ const Page = () => {
         </div>
       ))}
     </div>
+    </>
   );
 };
 

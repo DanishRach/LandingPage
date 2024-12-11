@@ -27,7 +27,7 @@ export async function getProject() {
                             layananID: data.layananID
                         }
                     })
-                    const newTagihan = data.tagihan + (harga?.harga || 0);
+                    const newTagihan = data.tagihan + (harga?.potongan || harga?.harga || 0);
         
                     await prisma.project.update({
                         where: {
@@ -127,23 +127,90 @@ export async function addProject(formData: FormData) {
                 domain: domain as Domain,
                 userID: userID,
                 layananID: layananID,
-                tagihan: 0,
+                tagihan: layanan?.potongan != null && layanan.potongan > 0
+                ? layanan.potongan
+                : layanan?.harga ?? 0,
                 createdAt: date,
                 tenggat: due,
             }
         })
 
         await prisma.$disconnect()
-        const message = await mailAdmin('penambahan data', "nurhidayahayundira296@gmail.com",user?.namaDepan! ,  user?.email!,layanan?.judul!, JSON.stringify(namaDomain) , JSON.stringify(domain))
-        const message2 = await mailCustomer(user?.namaDepan!,user?.email!,layanan?.judul!,namaDomain as string, domain as Domain)
-        if (message.error || message2.error){
+        const message = await mailCustomer(user?.namaDepan!,user?.email!,layanan?.judul!,namaDomain as string, domain as Domain)
+        if (message.error){
             return{
                 error: message.error
             }
         }
         revalidatePath('/')
         return {
-            success: 'success buy bundle'
+            success: 'success memesan'
+        }
+    } catch (err) {
+        console.log('error in: ' + err)
+        await prisma.$disconnect()
+        return {
+            error: 'something wrong'
+        }
+    }
+}
+
+export async function firstPayProject(formData: FormData) {
+    try {
+        const projectID = String(formData.get('projectID'))
+
+
+        const dataProject = await prisma.project.findUnique({
+            where: {
+                projectID: projectID
+            }
+        })
+        
+        const dataUser = await prisma.user.findUnique({
+            where: {
+                userID: dataProject?.userID
+            }
+        })
+        
+        const dataLayanan = await prisma.layanan.findUnique({
+            where: {
+                layananID: dataProject?.layananID
+            }
+        })
+
+        let tagihanSisa = 0
+
+        if (dataProject?.tagihan && dataLayanan?.harga) {
+            tagihanSisa = (dataProject?.tagihan - (dataLayanan?.potongan || dataLayanan.harga))
+        }
+
+        if(tagihanSisa < 0){
+            console.log('kesalahan pengurangna tagihan di api => project.tsx')
+            return{
+                error: 'something wrong'
+            }
+        }
+
+        await prisma.project.update({
+            where:{
+                projectID: projectID
+            },
+            data: {
+                tagihan: tagihanSisa,
+            }
+        })
+        const message = await mailAdmin('penambahan data', "nurhidayahayundira296@gmail.com",dataUser?.namaDepan! ,  dataUser?.email!,dataLayanan?.judul!, JSON.stringify(dataProject?.namaDomain!) , JSON.stringify(dataProject?.domain!))
+        const mail = await mailCustomerPay(dataUser?.namaDepan!, dataUser?.email!, dataLayanan?.judul!, dataProject?.namaDomain!, dataProject?.domain!)
+        if (mail.error || message.error) {
+            return {
+                error: mail.error || message.error
+            }
+        }
+
+        await prisma.$disconnect()
+        revalidatePath('/', 'layout')
+        return {
+            success: 'success pay project'
         }
     } catch (err) {
         console.log('error in: ' + err)
@@ -184,11 +251,11 @@ export async function payProject(formData: FormData) {
         let tagihanSisa = 0
 
         if (dataProject?.tagihan && dataLayanan?.harga) {
-            tagihanSisa = (dataProject?.tagihan - dataLayanan?.harga)
+            tagihanSisa = (dataProject?.tagihan - (dataLayanan?.potongan || dataLayanan.harga))
         }
 
         if(tagihanSisa < 0){
-            console.log('kesalahan pengurangna tagihan di api => project.tsx')
+            console.log('kesalahan pengurangan tagihan di api => project.tsx')
             return{
                 error: 'something wrong'
             }
@@ -203,7 +270,6 @@ export async function payProject(formData: FormData) {
                 tenggat: tenggatBaru,
             }
         })
-
         const mail = await mailCustomerPay(dataUser?.namaDepan!, dataUser?.email!, dataLayanan?.judul!, dataProject?.namaDomain!, dataProject?.domain!)
         if (mail.error) {
             return {
