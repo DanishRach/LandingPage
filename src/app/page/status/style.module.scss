@@ -14,8 +14,10 @@
   border-radius: 8px;
   padding: 16px;
   width: 300px;
+  height: auto; /* Tambahkan batasan tinggi jika diperlukan, misalnya max-height */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  overflow: hidden; /* Mencegah elemen keluar dari batas card */
 
   &:hover {
     transform: translateY(-4px);
@@ -29,6 +31,9 @@
   font-weight: bold;
   margin-bottom: 12px;
   color: #333333;
+  white-space: nowrap; /* Membatasi teks ke satu baris */
+  overflow: hidden; /* Menyembunyikan teks yang terlalu panjang */
+  text-overflow: ellipsis; /* Menambahkan "..." jika teks terlalu panjang */
 }
 
 /* Gaya untuk bidang informasi */
@@ -36,6 +41,9 @@
   font-size: 14px;
   color: #555555;
   margin-bottom: 8px;
+  overflow: hidden; /* Mencegah teks keluar dari batas */
+  text-overflow: ellipsis; /* Menambahkan "..." jika teks terlalu panjang */
+  white-space: nowrap; /* Membatasi teks ke satu baris */
 }
 
 /* Status gaya */
@@ -52,6 +60,9 @@
     padding: 4px 8px;
     border-radius: 4px;
     text-align: center;
+    overflow: hidden; /* Mencegah elemen keluar */
+    text-overflow: ellipsis; /* Tambahkan "..." jika terlalu panjang */
+    white-space: nowrap;
   }
 
   .active {
@@ -80,8 +91,8 @@
     text-decoration: none;
     margin-top: 8px;
     overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    white-space: nowrap; /* Membatasi teks ke satu baris */
+    text-overflow: ellipsis; /* Tambahkan "..." jika terlalu panjang */
     word-break: break-word;
     border: 1px solid #e0e0e0;
     padding: 6px 8px;
@@ -139,6 +150,9 @@
   margin-top: 10px;
   text-align: center;
   transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
   &:hover {
     background-color: #1565c0;
