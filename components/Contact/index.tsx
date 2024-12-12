@@ -64,11 +64,11 @@ const ContactSection: React.FC = () => {
           <Rounded>
             <a
               className={styles.sosial}
-              href="https://wa.me/6281217318899"
+              href="https://wa.me/6282231258411"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <p>+62 1817 8821 3412</p>
+              <p>+62 8223 1258 411</p>
             </a>
           </Rounded>
         </div>

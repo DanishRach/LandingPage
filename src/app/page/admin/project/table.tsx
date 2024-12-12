@@ -7,7 +7,7 @@ import {
   projectProps,
   userProps,
 } from "../../../../../types/types";
-import { changeStatus, editProject, handleDeploy } from "@/api/project";
+import { changeStatus, editProject, firstPayProject, handleDeploy, payProject } from "@/api/project";
 import { toast } from "sonner";
 import moment from "moment";
 import { getUser } from "@/api/user";
@@ -135,6 +135,26 @@ const Table: React.FC<TableProps> = ({
       toast.error("something wrong");
     }
   };
+
+  const handlePay = async(row: projectProps) => {
+    const formdata = new FormData()
+    if(row.projectID) formdata.append('projectID', row.projectID)
+    if(row.createdAt.getMonth() === new Date(Date.now()).getMonth()){
+      const result = await firstPayProject(formdata)
+      if (result.error) {
+        toast.error(result.error)
+      } else{
+        toast.success(result.success)
+      }
+    }else {
+      const result = await payProject(formdata)
+      if (result.error) {
+        toast.error(result.error)
+      } else{
+        toast.success(result.success)
+      }
+    }
+  }
 
   const userEmail = (userID: string) => {
     if (userID !== null && userData) {
@@ -354,7 +374,8 @@ const Table: React.FC<TableProps> = ({
                 )}
                 {visibleColumns.tagihan && (
                   <td className="p-2 border-b border-gray-700">
-                    Rp. {row.tagihan.toLocaleString("id-ID")}
+                    <p>Rp. {row.tagihan.toLocaleString("id-ID")}</p>
+                    <button onClick={() => handlePay(row)} className={`${row.tagihan > 0? '' : 'hidden'}`}>bayar</button>
                   </td>
                 )}
                 {visibleColumns.createdAt && (

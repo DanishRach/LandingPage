@@ -32,14 +32,12 @@ export async function mailCustomer(nama: string, email: string, layanan: string,
         await trasnporter.sendMail({
             from: "pertamaham@gmail.com",
             to: email,
-            subject: "Pembayaran Anda Telah Diterima!",
+            subject: "Pesanan Anda Telah Diterima!",
             text: `Yth. ${nama}
 
-                    Terima kasih atas pembayaran Anda untuk layanan cloud tier 
-                    ${layanan} pada domain "${namaDomain}.${domain.toLocaleLowerCase()}". Pembayaran Anda telah kami terima.
+                    Terima kasih atas pesanan Anda untuk layanan cloud tier ${layanan} pada domain"${namaDomain}.${domain.toLocaleLowerCase()}". Pesanan Anda telah kami terima dan sedang kami proses.
 
-                    Anda kini telah resmi menjadi pelanggan PT. Inovasi Utama Nusantara. 
-                    Kami akan segera mengaktifkan layanan Anda.
+                    Anda akan segera menerima email konfirmasi lebih lanjut setelah layanan Anda aktif.
 
                     Terima kasih,
 
@@ -51,13 +49,12 @@ export async function mailCustomer(nama: string, email: string, layanan: string,
                     </p>
                         <br></br>
                     <p>
-                    Terima kasih atas pembayaran Anda untuk layanan cloud tier 
-                    ${layanan} pada domain "${namaDomain}.${domain.toLocaleLowerCase()}". Pembayaran Anda telah kami terima.
+                    Terima kasih atas pesanan Anda untuk layanan cloud tier ${layanan} pada 
+                    domain"${namaDomain}.${domain.toLocaleLowerCase()}". Pesanan Anda telah kami terima dan sedang kami proses.
                     </p>
                         <br></br>
                     <p>
-                    Anda kini telah resmi menjadi pelanggan PT. Inovasi Utama Nusantara. 
-                    Kami akan segera mengaktifkan layanan Anda.
+                    Anda akan segera menerima email konfirmasi lebih lanjut setelah layanan Anda aktif.
                     </p>
                         <br></br>
                     <p>
