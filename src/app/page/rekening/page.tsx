@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from "react";
+import styles from './RekeningPage.module.scss';
 
 // Define the interface for the page props
 interface RekeningPageProps {
@@ -24,12 +25,12 @@ export default function RekeningPage({ searchParams }: RekeningPageProps) {
   return (
     <>
       {showPaymentInfo && (
-        <div className="absolute top-auto">
-          <div className="bg-yellow max-w-fit">
-            <p>nomor rekening</p>
-            <p>6000046010 -- INOVASI UTAMA NUSANTARA</p>
-            <p>Bank BNI</p>
-            <button onClick={handleClose}>close</button>
+        <div className={styles.paymentInfo}>
+          <div className={styles.container}>
+            <p className={styles.title}>Nomor Rekening</p>
+            <p className={styles.accountNumber}>6000046010 -- INOVASI UTAMA NUSANTARA</p>
+            <p className={styles.bankName}>Bank BNI</p>
+            <button className={styles.closeButton} onClick={handleClose}>Tutup</button>
           </div>
         </div>
       )}

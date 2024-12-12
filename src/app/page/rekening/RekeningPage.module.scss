@@ -1,0 +1,47 @@
+// RekeningPage.module.scss
+
+.paymentInfo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .container {
+    max-width: 300px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .accountNumber {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .bankName {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  
+  .closeButton {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .closeButton:hover {
+    background-color: #3e8e41;
+  }
